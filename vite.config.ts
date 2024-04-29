@@ -1,19 +1,21 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
-import { resolve, dirname } from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { resolve } from "path";
 
 export default () => {
 	return defineConfig({
 		plugins: [svgr(), react()],
 		resolve: {
-			alias: [
-				{ find: "@", replacement: resolve(__dirname, "src") },
-				{ find: "src", replacement: resolve(__dirname, "src/") },
-			],
+			alias: {
+				"@pages": resolve(__dirname, "src/pages"),
+				"@components": resolve(__dirname, "src/components"),
+				"@styles": resolve(__dirname, "src/styles"),
+				"@store": resolve(__dirname, "src/store"),
+				"@hooks": resolve(__dirname, "src/hooks"),
+				"@type": resolve(__dirname, "src/type"),
+				"@mocks": resolve(__dirname, "src/mocks"),
+			},
 		},
 		server: {
 			proxy: {
