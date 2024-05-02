@@ -4,24 +4,34 @@ import reset from "styled-reset";
 const GlobalStyles = createGlobalStyle`
     ${reset};
 
-    a{
-        text-decoration: none;
-        color: inherit;
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
-    *{		
-        box-sizing: border-box;
-				&::-webkit-scrollbar {
-			    width: 12px;
-		    }
-
-		    &::-webkit-scrollbar-thumb {
-			    border-radius: 10px;
-			    background: #EEEEEE;
-			    background-clip: padding-box;
-			    border: 4px solid transparent;
-	    	}
+    * {		
+      box-sizing: border-box;
     }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: gray;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-y: scroll;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+    }
+
+
 
 	  :root {	
 		  --color-white : #ffffff; // fixed
