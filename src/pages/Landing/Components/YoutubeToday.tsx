@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import TopicCard from "./TopicCard";
 
 const TODAY_TITLE = "유투브 투데이";
 const YOUTUBE_TOPICS = [
@@ -19,6 +20,14 @@ const YOUTUBE_TOPICS = [
 	"패션",
 	"뷰티/메이크업",
 ];
+const CATEGORY = "주식";
+const TITLE = "변화의 흐름 미래를 준비하는 법";
+const SUMMARY =
+	"이 영상에서는 일상적인 김치찌개에 변화를 주어 더욱 맛있게 즐길 수 있는 새로운 레시피를 제공합니다. 특별한 재료를 추가하고, 집에서 간편하게 따라 할 수 있는 방법을 자세히 설명합니다.";
+const THUMBNAIL = "https://picsum.photos/200/154";
+const UPLOAD = "2024-04-23 09:40";
+const CHANNEL_NAME = "채널 이름";
+const SUBSCRIBER = 500;
 
 const YoutubeToday = () => {
 	const [timeLeft, setTimeLeft] = useState<string>("");
@@ -59,6 +68,15 @@ const YoutubeToday = () => {
 					);
 				})}
 			</TopicNav>
+			<TopicCard
+				category={CATEGORY}
+				title={TITLE}
+				summary={SUMMARY}
+				thumbnail={THUMBNAIL}
+				upload={UPLOAD}
+				channelName={CHANNEL_NAME}
+				subscriber={SUBSCRIBER}
+			/>
 		</Container>
 	);
 };
@@ -104,6 +122,7 @@ const TopicNav = styled.div`
 	width: calc(100% + 20px);
 	display: flex;
 	gap: 12px;
+	margin-bottom: 24px;
 	overflow-x: hidden;
 `;
 
