@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import ServiceIntroduce from "./Components/ServiceIntroduce";
 import LogoHeader from "./Components/LogoHeader";
 import YoutubeToday from "./Components/YoutubeToday";
+import Footer from "./Components/Footer";
 const index = () => {
 	return (
 		<Container>
@@ -9,6 +10,7 @@ const index = () => {
 			<ServiceIntroduce />
 			<GoogleLoginBtn>구글 계정 연동해서 무료 구독하기</GoogleLoginBtn>
 			<YoutubeToday />
+			<Footer />
 		</Container>
 	);
 };
