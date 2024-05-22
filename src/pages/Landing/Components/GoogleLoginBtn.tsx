@@ -32,6 +32,13 @@ const GoogleLoginBtn = () => {
 				onGoogleLogin(credentialResponse);
 			}}
 			onError={() => console.log("로그인 실패")}
+			width="320px"
+			size="large"
+			type="standard"
+			text="signin_with"
+			shape="square" //버튼 shape 지정
+			theme="filled_blue" //테마 blue 또는 black
+			logo_alignment="left" //로고 정렬 위치
 		></GoogleLogin>
 	);
 };
