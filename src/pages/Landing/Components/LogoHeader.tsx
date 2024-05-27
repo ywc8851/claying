@@ -1,15 +1,26 @@
 import styled from "styled-components";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "@src/store/user";
+import { googleLogout } from "@react-oauth/google";
 
 const LogoHeader = () => {
 	const user = useRecoilValue(userState);
+	const setUser = useSetRecoilState(userState);
+
+	const logOut = () => {
+		googleLogout();
+		setUser({
+			name: "",
+			email: "",
+			picture: "",
+		});
+	};
 
 	return (
 		<Container>
 			로고
-			<ProfileImage>
-				<img src={user.picture} alt="User profile" />
+			<ProfileImage onClick={logOut}>
+				{user.picture !== "" && <img src={user.picture} alt="User profile" />}
 			</ProfileImage>
 		</Container>
 	);
@@ -40,5 +51,6 @@ const ProfileImage = styled.div`
 		width: 100%;
 		height: 100%;
 		border-radius: 50%;
+		overflow: hidden;
 	}
 `;
