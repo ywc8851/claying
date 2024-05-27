@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { useSetRecoilState } from "recoil";
+import { userState } from "@src/store/user";
 
 interface GoogleDecodedProps {
 	aud: string;
@@ -20,10 +22,17 @@ interface GoogleDecodedProps {
 }
 
 const GoogleLoginBtn = () => {
+	const setUser = useSetRecoilState(userState);
+
 	const onGoogleLogin = async (res: CredentialResponse) => {
 		const decoded: GoogleDecodedProps = jwtDecode(JSON.stringify(res));
-
-		console.log(decoded);
+		const { name, email, picture } = decoded;
+		console.log(name, email, picture);
+		setUser({
+			name,
+			email,
+			picture,
+		});
 	};
 
 	return (
@@ -36,9 +45,9 @@ const GoogleLoginBtn = () => {
 			size="large"
 			type="standard"
 			text="signin_with"
-			shape="square" //버튼 shape 지정
-			theme="filled_blue" //테마 blue 또는 black
-			logo_alignment="left" //로고 정렬 위치
+			shape="square"
+			theme="filled_blue"
+			logo_alignment="left"
 		></GoogleLogin>
 	);
 };
