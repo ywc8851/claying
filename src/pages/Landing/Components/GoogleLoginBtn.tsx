@@ -27,7 +27,6 @@ const GoogleLoginBtn = () => {
 	const onGoogleLogin = async (res: CredentialResponse) => {
 		const decoded: GoogleDecodedProps = jwtDecode(JSON.stringify(res));
 		const { name, email, picture } = decoded;
-		console.log(name, email, picture);
 		setUser({
 			name,
 			email,
