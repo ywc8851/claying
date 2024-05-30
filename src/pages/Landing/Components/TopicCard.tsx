@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 interface TopicCardProps {
@@ -11,8 +12,14 @@ interface TopicCardProps {
 }
 
 const TopicCard = ({ category, title, summary, thumbnail, upload, channelName, subscriber }: TopicCardProps) => {
+	const navigate = useNavigate();
+
+	const handleNavigate = () => {
+		navigate("/detail");
+	};
+
 	return (
-		<Container>
+		<Container onClick={handleNavigate}>
 			<CardHeader>
 				<Category>{category}</Category>
 				<Title>{title}</Title>
