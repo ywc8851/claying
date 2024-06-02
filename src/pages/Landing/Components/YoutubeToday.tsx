@@ -123,7 +123,14 @@ const TopicNav = styled.div`
 	display: flex;
 	gap: 12px;
 	margin-bottom: 24px;
-	overflow-x: hidden;
+	overflow-x: scroll;
+
+	// 스크롤 UI 제거
+	::-webkit-scrollbar {
+		display: none;
+	}
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 `;
 
 const Topic = styled.div`
