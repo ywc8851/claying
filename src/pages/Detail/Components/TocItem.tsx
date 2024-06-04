@@ -6,9 +6,10 @@ interface TocItemProps {
 	start: number;
 	end: number;
 	summary: string;
+	onClick: (num: number) => void;
 }
 
-const TocItem = ({ seq, start, end, summary }: TocItemProps) => {
+const TocItem = ({ seq, start, end, summary, onClick }: TocItemProps) => {
 	const formatMinutesToTime = (minutes: number): string => {
 		const hours = Math.floor(minutes / 60);
 		const remainingMinutes = minutes % 60;
@@ -26,7 +27,7 @@ const TocItem = ({ seq, start, end, summary }: TocItemProps) => {
 	return (
 		<Container>
 			<Title>목차 {seq}</Title>
-			<Thumbnail>
+			<Thumbnail onClick={() => onClick(start)}>
 				<PlayIcon />
 			</Thumbnail>
 			<Timeline>
