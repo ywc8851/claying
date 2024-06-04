@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
-import Landing from "@pages/Landing/index.tsx";
-import Detail from "@pages/Detail/index.tsx";
+import Landing from "@/pages/Landing/index";
+import Detail from "@/pages/Detail/index";
 import GlobalStyles from "./styles/GlobalStyled.ts";
 
 function App() {

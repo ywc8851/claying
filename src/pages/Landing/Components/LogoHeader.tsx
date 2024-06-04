@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userState } from "@src/store/user";
+import { userState } from "@/store/user";
 import { googleLogout } from "@react-oauth/google";
 
 const LogoHeader = () => {
