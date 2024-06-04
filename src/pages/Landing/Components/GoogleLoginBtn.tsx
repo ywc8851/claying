@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useSetRecoilState } from "recoil";
-import { userState } from "@src/store/user";
+import { userState } from "@/store/user";
 
 interface GoogleDecodedProps {
 	aud: string;
