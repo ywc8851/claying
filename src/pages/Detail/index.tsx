@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import LogoHeader from "./../Landing/Components/LogoHeader";
 import YouTube, { YouTubeProps } from "react-youtube";
@@ -25,7 +26,10 @@ const MOCK_DATA = [
 ];
 
 const index = () => {
+	const [videoPlayer, setVideoPlayer] = useState<YT.Player | null>(null);
+
 	const onPlayerReady: YouTubeProps["onReady"] = (event) => {
+		setVideoPlayer(event.target);
 		event.target.pauseVideo();
 	};
 
@@ -33,9 +37,12 @@ const index = () => {
 		// event.data 값 => 1 재생 중, 2 일시중지, 0 종료
 		if (!event.data) {
 			const player = event.target;
-			player.seekTo(5);
 			player.playVideo();
 		}
+	};
+
+	const handleTocItemClick = (start: number) => {
+		if (videoPlayer) videoPlayer.seekTo(start, true);
 	};
 
 	const opts: YouTubeProps["opts"] = {
@@ -70,7 +77,16 @@ const index = () => {
 			</TOC>
 			<Contents>
 				{MOCK_DATA.map(({ seq, start, end, summary }) => {
-					return <TocItem key={seq} seq={seq} start={start} end={end} summary={summary} />;
+					return (
+						<TocItem
+							key={seq}
+							seq={seq}
+							start={start}
+							end={end}
+							summary={summary}
+							onClick={() => handleTocItemClick(start)}
+						/>
+					);
 				})}
 			</Contents>
 		</Container>
