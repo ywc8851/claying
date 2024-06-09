@@ -66,7 +66,9 @@ const index = () => {
 				<Title>변화의 흐름 미래를 준비하는 법</Title>
 				<Upload>2024-04-27 09:32 업로드</Upload>
 			</PageInfo>
-			<YouTube videoId="6Af6b_wyiwI" opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange} />
+			<FixedYouTubeContainer>
+				<YouTube videoId="6Af6b_wyiwI" opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange} />
+			</FixedYouTubeContainer>
 			<TOC>
 				<div>목차</div>
 				<div>
@@ -160,4 +162,16 @@ const Contents = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+`;
+
+const FixedYouTubeContainer = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1000;
+	background-color: white;
+	display: flex;
+	justify-content: center;
+	padding: 10px 0;
 `;
