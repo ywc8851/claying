@@ -37,6 +37,10 @@ const MOCK_DATA = [
 	},
 ];
 
+const MOCK_CATEGORY = "주식";
+const MOCK_TITLE = "변화의 흐름 미래를 준비하는 법";
+const MOCK_UPLOAD = "2024-04-27 09:32";
+
 const index = () => {
 	const [videoPlayer, setVideoPlayer] = useState<any>(null);
 	const [isFixed, setIsFixed] = useState(false);
@@ -91,11 +95,11 @@ const index = () => {
 
 	return (
 		<Container $isFixed={isFixed}>
-			<LogoHeader />
+			<LogoHeader title={isFixed ? MOCK_TITLE : ""} />
 			<PageInfo ref={scrollRef}>
-				<Category>주식</Category>
-				<Title>변화의 흐름 미래를 준비하는 법</Title>
-				<Upload>2024-04-27 09:32 업로드</Upload>
+				<Category>{MOCK_CATEGORY}</Category>
+				<Title>{MOCK_TITLE}</Title>
+				<Upload>{MOCK_UPLOAD} 업로드</Upload>
 			</PageInfo>
 			<VideoContainer ref={videoContainerRef} isFixed={isFixed}>
 				<YouTube videoId="6Af6b_wyiwI" opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange} />
