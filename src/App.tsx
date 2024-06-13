@@ -3,12 +3,15 @@ import styled from "styled-components";
 import Landing from "@/pages/Landing/index";
 import Detail from "@/pages/Detail/index";
 import GlobalStyles from "./styles/GlobalStyled.ts";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 function App() {
 	return (
 		<Router>
 			<AppContainer>
 				<GlobalStyles />
+				<ScrollToTop />
 				<Routes>
 					<Route path="/" element={<Landing />} />
 					<Route path="/detail" element={<Detail />} />
@@ -28,3 +31,13 @@ const AppContainer = styled.div`
 	margin: 0;
 	background-color: white;
 `;
+
+const ScrollToTop = () => {
+	const { pathname } = useLocation();
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [pathname]);
+
+	return null;
+};
