@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import LogoHeader from "./../Landing/Components/LogoHeader";
 import YouTube, { YouTubeProps } from "react-youtube";
 import TocItem from "./Components/TocItem";
@@ -44,12 +44,14 @@ const MOCK_UPLOAD = "2024-04-27 09:32";
 const index = () => {
 	const [videoPlayer, setVideoPlayer] = useState<any>(null);
 	const [isFixed, setIsFixed] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 
 	const onPlayerReady: YouTubeProps["onReady"] = (event) => {
 		setVideoPlayer(event.target);
 		event.target.pauseVideo();
+		setIsLoading(false);
 	};
 
 	const onPlayerStateChange: YouTubeProps["onStateChange"] = (event) => {
@@ -87,6 +89,7 @@ const index = () => {
 		window.addEventListener("scroll", handleScroll);
 
 		handleScroll();
+		setIsLoading(true);
 
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
@@ -101,8 +104,15 @@ const index = () => {
 				<Title>{MOCK_TITLE}</Title>
 				<Upload>{MOCK_UPLOAD} 업로드</Upload>
 			</PageInfo>
-			<VideoContainer ref={videoContainerRef} isFixed={isFixed}>
-				<YouTube videoId="6Af6b_wyiwI" opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange} />
+			<VideoContainer ref={videoContainerRef} $isFixed={isFixed}>
+				{isLoading && <Loader />}
+				<YouTube
+					videoId="6Af6b_wyiwI"
+					opts={opts}
+					onReady={onPlayerReady}
+					onStateChange={onPlayerStateChange}
+					style={{ display: isLoading ? "none" : "block" }}
+				/>
 			</VideoContainer>
 			<TOC>
 				<div>목차</div>
@@ -199,12 +209,30 @@ const Contents = styled.div`
 	align-items: center;
 `;
 
-const VideoContainer = styled.div<{ isFixed: boolean }>`
-	position: ${(props) => (props.isFixed ? "fixed" : "static")};
-	top: ${(props) => (props.isFixed ? "52px" : "auto")};
-	left: ${(props) => (props.isFixed ? "0" : "auto")};
+const VideoContainer = styled.div<{ $isFixed: boolean }>`
+	position: ${(props) => (props.$isFixed ? "fixed" : "static")};
+	top: ${(props) => (props.$isFixed ? "52px" : "auto")};
+	left: ${(props) => (props.$isFixed ? "0" : "auto")};
 	width: 100%;
 	z-index: 1000;
 	display: flex;
 	justify-content: center;
+`;
+
+const LoaderAnimation = keyframes`
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: 200px 0;
+    }
+`;
+
+const Loader = styled.div`
+	width: 360px;
+	height: 202px;
+	background: #f0f0f0;
+	background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+	background-size: 200% 100%;
+	animation: ${LoaderAnimation} 1.5s infinite;
 `;
