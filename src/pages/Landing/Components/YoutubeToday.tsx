@@ -89,6 +89,7 @@ const Container = styled.div`
 	padding: 25px 20px;
 	display: flex;
 	flex-direction: column;
+	margin-top: 36px;
 `;
 
 const TodayTitle = styled.span`
