@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useSetRecoilState } from "recoil";
