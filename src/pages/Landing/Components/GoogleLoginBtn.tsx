@@ -1,53 +1,27 @@
-import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 import { useSetRecoilState } from "recoil";
 import { userState } from "@/store/user";
-
-interface GoogleDecodedProps {
-	aud: string;
-	azp: string;
-	email: string;
-	email_varified: boolean;
-	exp: number;
-	family_name: string;
-	given_name: string;
-	iat: number;
-	iss: string;
-	jti: string;
-	name: string;
-	nbf: number;
-	picture: string;
-	sub: string;
-}
+import { auth } from "@/firebase";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const GoogleLoginBtn = () => {
 	const setUser = useSetRecoilState(userState);
 
-	const onGoogleLogin = async (res: CredentialResponse) => {
-		const decoded: GoogleDecodedProps = jwtDecode(JSON.stringify(res));
-		const { name, email, picture } = decoded;
-		setUser({
-			name,
-			email,
-			picture,
-		});
+	const provider = new GoogleAuthProvider();
+
+	const signInGoole = async () => {
+		try {
+			const { user } = await signInWithPopup(auth, provider);
+			setUser({
+				name: user.displayName,
+				email: user.email,
+				picture: user.photoURL,
+			});
+		} catch (e) {
+			console.error(e);
+		}
 	};
 
-	return (
-		<GoogleLogin
-			onSuccess={(credentialResponse) => {
-				onGoogleLogin(credentialResponse);
-			}}
-			onError={() => console.log("로그인 실패")}
-			width="320px"
-			size="large"
-			type="standard"
-			text="signin_with"
-			shape="square"
-			theme="filled_blue"
-			logo_alignment="left"
-		></GoogleLogin>
-	);
+	return <button onClick={signInGoole}>구글로 로그인 하기</button>;
 };
 
 export default GoogleLoginBtn;

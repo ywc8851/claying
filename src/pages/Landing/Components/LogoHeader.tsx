@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "@/store/user";
-import { googleLogout } from "@react-oauth/google";
 import BackIcon from "@/assets/back.svg?react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { auth, signOut } from "@/firebase";
 
 interface LogoHeaderProps {
 	title?: string;
@@ -24,13 +24,17 @@ const LogoHeader = ({ title }: LogoHeaderProps) => {
 		navigate("/");
 	};
 
-	const logOut = () => {
-		googleLogout();
-		setUser({
-			name: "",
-			email: "",
-			picture: "",
-		});
+	const logOut = async () => {
+		try {
+			await signOut(auth);
+			setUser({
+				name: "",
+				email: "",
+				picture: "",
+			});
+		} catch (e) {
+			console.error("Error loggin out: ", e);
+		}
 	};
 
 	return (
