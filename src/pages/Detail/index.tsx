@@ -3,45 +3,12 @@ import styled, { keyframes } from "styled-components";
 import LogoHeader from "./../Landing/Components/LogoHeader";
 import YouTube, { YouTubeProps } from "react-youtube";
 import TocItem from "./Components/TocItem";
-
-const MOCK_DATA = [
-	{
-		seq: 1,
-		start: 0,
-		end: 180,
-		summary: "목차 1에 대한 요약입니다. 목차 1에 대한 요약입니다. 목차 1에 대한 요약입니다. 목차 1에 대한 요약입니다.",
-	},
-	{
-		seq: 2,
-		start: 181,
-		end: 360,
-		summary: "목차 2에 대한 요약입니다. 목차 2에 대한 요약입니다. 목차 2에 대한 요약입니다. 목차 2에 대한 요약입니다.",
-	},
-	{
-		seq: 3,
-		start: 361,
-		end: 400,
-		summary: "목차 3에 대한 요약입니다. 목차 3에 대한 요약입니다. 목차 3에 대한 요약입니다. 목차 3에 대한 요약입니다.",
-	},
-	{
-		seq: 4,
-		start: 361,
-		end: 400,
-		summary: "목차 4에 대한 요약입니다. 목차 3에 대한 요약입니다. 목차 3에 대한 요약입니다. 목차 3에 대한 요약입니다.",
-	},
-	{
-		seq: 5,
-		start: 361,
-		end: 400,
-		summary: "목차 5에 대한 요약입니다. 목차 3에 대한 요약입니다. 목차 3에 대한 요약입니다. 목차 3에 대한 요약입니다.",
-	},
-];
-
-const MOCK_CATEGORY = "주식";
-const MOCK_TITLE = "변화의 흐름 미래를 준비하는 법";
-const MOCK_UPLOAD = "2024-04-27 09:32";
+import { useRecoilValue } from "recoil";
+import { detailDataState } from "@/store/detailData";
+import { DataProps } from "@/types/dataProps";
 
 const index = () => {
+	const detailData = useRecoilValue<DataProps>(detailDataState);
 	const [videoPlayer, setVideoPlayer] = useState<any>(null);
 	const [isFixed, setIsFixed] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -91,6 +58,8 @@ const index = () => {
 		handleScroll();
 		setIsLoading(true);
 
+		console.log(detailData.template_summary);
+
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
 		};
@@ -98,16 +67,16 @@ const index = () => {
 
 	return (
 		<Container $isFixed={isFixed}>
-			<LogoHeader title={isFixed ? MOCK_TITLE : ""} />
+			<LogoHeader title={isFixed ? detailData.title : ""} />
 			<PageInfo ref={scrollRef}>
-				<Category>{MOCK_CATEGORY}</Category>
-				<Title>{MOCK_TITLE}</Title>
-				<Upload>{MOCK_UPLOAD} 업로드</Upload>
+				<Category>{detailData.section}</Category>
+				<Title>{detailData.title}</Title>
+				<Upload>{detailData.upload_date} 업로드</Upload>
 			</PageInfo>
 			<VideoContainer ref={videoContainerRef} $isFixed={isFixed}>
 				{isLoading && <Loader />}
 				<YouTube
-					videoId="6Af6b_wyiwI"
+					videoId={detailData.id}
 					opts={opts}
 					onReady={onPlayerReady}
 					onStateChange={onPlayerStateChange}
@@ -117,21 +86,21 @@ const index = () => {
 			<TOC>
 				<div>목차</div>
 				<div>
-					{MOCK_DATA.map(({ seq }) => {
-						return <span key={seq}>목차 {seq}</span>;
+					{detailData.template_summary.map((_, index) => {
+						return <span key={index}>목차 {index + 1}</span>;
 					})}
 				</div>
 			</TOC>
 			<Contents>
-				{MOCK_DATA.map(({ seq, start, end, summary }) => {
+				{detailData.template_summary.map(({ start_time, end_time, contents }, index) => {
 					return (
 						<TocItem
-							key={seq}
-							seq={seq}
-							start={start}
-							end={end}
-							summary={summary}
-							onClick={() => handleTocItemClick(start)}
+							key={index}
+							seq={index + 1}
+							start={Math.floor(Number(start_time))}
+							end={Math.floor(Number(end_time))}
+							summary={contents}
+							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
 						/>
 					);
 				})}
@@ -147,6 +116,8 @@ const Container = styled.div<{ $isFixed: boolean }>`
 	flex-direction: column;
 	font-family: "Pretendard Variable";
 	padding-top: 76px;
+
+	/* padding-top: ${(props) => (props.$isFixed ? "224px" : "76px")}; */
 `;
 
 const PageInfo = styled.div`

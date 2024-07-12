@@ -1,37 +1,36 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
+import { detailDataState } from "@/store/detailData";
+import { DataProps } from "@/types/dataProps";
 
-interface TopicCardProps {
-	category: string;
-	title: string;
-	summary: string;
-	thumbnail: string;
-	upload: string;
-	channelName: string;
-	subscriber: number;
-}
+const CHANNEL_NAME = "채널 이름";
+const SUBSCRIBER = 500;
 
-const TopicCard = ({ category, title, summary, thumbnail, upload, channelName, subscriber }: TopicCardProps) => {
+const TopicCard = (props: DataProps) => {
 	const navigate = useNavigate();
+	const setTopicState = useSetRecoilState(detailDataState);
+	const { section, title, short_summary, thumbnail, upload_date } = props;
 
 	const handleNavigate = () => {
+		setTopicState(props);
 		navigate("/detail");
 	};
 
 	return (
 		<Container onClick={handleNavigate}>
 			<CardHeader>
-				<Category>{category}</Category>
+				<Category>{section}</Category>
 				<Title>{title}</Title>
 			</CardHeader>
-			<Summary>{summary}</Summary>
+			<Summary>{short_summary}</Summary>
 			<Thumbnail src={thumbnail} />
-			<UploadTime>{upload} 영상 업로드</UploadTime>
+			<UploadTime>{upload_date} 영상 업로드</UploadTime>
 			<ChannelInfo>
 				<ProfileImage></ProfileImage>
 				<ProfileInfo>
-					<Name>{channelName}</Name>
-					<Subscriber>{subscriber}명</Subscriber>
+					<Name>{CHANNEL_NAME}</Name>
+					<Subscriber>{SUBSCRIBER}명</Subscriber>
 				</ProfileInfo>
 			</ChannelInfo>
 		</Container>
@@ -65,8 +64,10 @@ const Category = styled.div`
 	gap: 10px;
 	border-radius: 4px;
 	background: rgba(48, 213, 200, 1);
+	flex-shrink: 0;
+	text-align: center;
 
-	font-size: 20px;
+	font-size: 12px;
 	font-weight: 800;
 	line-height: 24px;
 	color: rgba(255, 255, 255, 1);
@@ -79,7 +80,7 @@ const Title = styled.span`
 `;
 
 const Summary = styled.div`
-	height: 130px;
+	/* height: 130px; */
 	padding: 15px 14px 15px 14px;
 	gap: 10px;
 	border-radius: 4px;
