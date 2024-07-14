@@ -83,7 +83,7 @@ const index = () => {
 					style={{ display: isLoading ? "none" : "block" }}
 				/>
 			</VideoContainer>
-			<TOC>
+			<TOC $isFixed={isFixed}>
 				<div>목차</div>
 				<div>
 					{detailData.template_summary.map((_, index) => {
@@ -116,7 +116,6 @@ const Container = styled.div<{ $isFixed: boolean }>`
 	flex-direction: column;
 	font-family: "Pretendard Variable";
 	padding-top: 76px;
-
 	/* padding-top: ${(props) => (props.$isFixed ? "224px" : "76px")}; */
 `;
 
@@ -148,8 +147,8 @@ const Upload = styled.span`
 	line-height: 14.4px;
 `;
 
-const TOC = styled.div`
-	margin-top: 30px;
+const TOC = styled.div<{ $isFixed: boolean }>`
+	margin-top: ${(props) => (props.$isFixed ? "178px" : "30px")};
 	padding: 0 20px;
 
 	div:first-child {
