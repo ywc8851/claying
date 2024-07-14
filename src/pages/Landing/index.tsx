@@ -8,10 +8,12 @@ import YoutubeToday from "./Components/YoutubeToday";
 import Footer from "./Components/Footer";
 import GoogleLoginBtn from "./Components/GoogleLoginBtn";
 import { dataState } from "@/store/data";
+import { userState } from "@/store/user";
 
 const index = () => {
 	const setApiData = useSetRecoilState(dataState);
 	const apiData = useRecoilValue(dataState);
+	const user = useRecoilValue(userState);
 
 	useEffect(() => {
 		const getData = async () => {
@@ -28,10 +30,14 @@ const index = () => {
 	}, [setApiData]);
 
 	return (
-		<Container>
+		<Container $isLogin={user.name !== ""}>
 			<LogoHeader />
-			<ServiceIntroduce />
-			<GoogleLoginBtn />
+			{user.name === "" && (
+				<>
+					<ServiceIntroduce />
+					<GoogleLoginBtn />
+				</>
+			)}
 			<YoutubeToday data={apiData} />
 			<Footer />
 		</Container>
@@ -40,10 +46,10 @@ const index = () => {
 
 export default index;
 
-const Container = styled.div`
+const Container = styled.div<{ $isLogin: boolean }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	font-family: "Pretendard Variable";
-	padding-top: 76px;
+	padding-top: ${(props) => (props.$isLogin ? "0" : "76px")};
 `;
