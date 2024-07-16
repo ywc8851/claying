@@ -51,5 +51,5 @@ const Container = styled.div<{ $isLogin: boolean }>`
 	flex-direction: column;
 	align-items: center;
 	font-family: "Pretendard Variable";
-	padding-top: ${(props) => (props.$isLogin ? "0" : "76px")};
+	padding-top: ${(props) => (props.$isLogin ? "16px" : "76px")};
 `;

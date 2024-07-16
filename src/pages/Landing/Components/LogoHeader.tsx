@@ -38,32 +38,40 @@ const LogoHeader = ({ title }: LogoHeaderProps) => {
 	};
 
 	return (
-		<Container>
+		<Container $isDetailPage={isDetailPage}>
 			{isDetailPage && <BackIcon onClick={goBack} />}
-			<span onClick={goHome}>로고</span>
+			<span onClick={goHome} className="logo">
+				로고
+			</span>
 			{title && <Title>{title}</Title>}
-			<ProfileImage onClick={logOut}>
-				{user.picture !== "" && <img src={user.picture} alt="User profile" />}
-			</ProfileImage>
+			{user.picture !== "" && (
+				<ProfileImage onClick={logOut}>
+					{user.picture !== "" && <img src={user.picture} alt="User profile" />}
+				</ProfileImage>
+			)}
 		</Container>
 	);
 };
 export default LogoHeader;
 
-const Container = styled.header`
+const Container = styled.header<{ $isDetailPage: boolean }>`
 	width: 100%;
 	height: 52px;
 	padding: 0 20px;
 	position: fixed;
 	top: 0;
 	max-width: 360px;
-	background-color: rgba(244, 244, 244, 1);
+	background-color: ${(props) => (props.$isDetailPage ? "rgba(244, 244, 244, 1)" : "rgba(0, 123, 255, 1)")};
 	font-family: "Pretendard Variable";
 
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	z-index: 1000;
+
+	.logo {
+		color: ${(props) => (props.$isDetailPage ? "rgba(0, 0, 0, 1)" : "rgba(255, 255, 255, 1)")};
+	}
 `;
 
 const Title = styled.span`
@@ -81,7 +89,6 @@ const ProfileImage = styled.div`
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
-	background-color: blue;
 
 	img {
 		width: 100%;
