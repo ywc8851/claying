@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const SERVICE_TITLE = "유튜브 영상 정보의 홍수 속에서 나만 똑똑하게 시청하는 방법.";
 const SERVICE_DESCRIPTION =
-	"500시간이 넘는 영상이 매 분마다 업로드 되는 현재, 오늘 업로드된 주요 영상들을 <span class='highlight'>매일</span> 요약드립니다.";
+	"500시간이 넘는 영상이 매 분마다 업로드 되는 현재, 오늘 업로드된 주요 영상들을 <span class='highlight'>매일</span> 읽어드립니다.";
 const SERVICE_SUBDESCRIPTION = "<span class='highlight'>17</span>가지 주요 분야 영상들 매일 요약받고 트렌디해지기!";
 const SERVICE_TAGS = [
 	"주식",
