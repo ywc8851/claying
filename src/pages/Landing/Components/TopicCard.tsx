@@ -4,13 +4,25 @@ import { useSetRecoilState } from "recoil";
 import { detailDataState } from "@/store/detailData";
 import { DataProps } from "@/types/dataProps";
 
-const CHANNEL_NAME = "채널 이름";
-const SUBSCRIBER = 500;
+interface TopicCardProps extends DataProps {
+	icon: React.ReactNode;
+}
 
-const TopicCard = (props: DataProps) => {
+const TopicCard = (props: TopicCardProps) => {
 	const navigate = useNavigate();
 	const setTopicState = useSetRecoilState(detailDataState);
-	const { section, title, short_summary, thumbnail, upload_date } = props;
+	const {
+		section,
+		headline_title,
+		headline_subtitle,
+		short_summary,
+		thumbnail,
+		upload_date,
+		channel_thumbnail,
+		channel_name,
+		channel_subscribers,
+		icon,
+	} = props;
 
 	const handleNavigate = () => {
 		setTopicState(props);
@@ -20,17 +32,30 @@ const TopicCard = (props: DataProps) => {
 	return (
 		<Container onClick={handleNavigate}>
 			<CardHeader>
-				<Category>{section}</Category>
-				<Title>{title}</Title>
+				<IconWrapper>
+					<IconBox>{icon}</IconBox>
+					{section === "뷰티/메이크업" ? (
+						<span>
+							뷰티/ <br /> 메이크업
+						</span>
+					) : (
+						<span>{section}</span>
+					)}
+				</IconWrapper>
+				<Title>
+					{headline_title} <br /> {headline_subtitle}
+				</Title>
 			</CardHeader>
-			<Summary>{short_summary}</Summary>
+			<Summary>
+				<p>{short_summary}</p>
+			</Summary>
 			<Thumbnail src={thumbnail} />
-			<UploadTime>{upload_date} 영상 업로드</UploadTime>
+			<UploadTime>{upload_date.slice(0, -3)} 영상 업로드</UploadTime>
 			<ChannelInfo>
-				<ProfileImage></ProfileImage>
+				<ProfileImage src={channel_thumbnail}></ProfileImage>
 				<ProfileInfo>
-					<Name>{CHANNEL_NAME}</Name>
-					<Subscriber>{SUBSCRIBER}명</Subscriber>
+					<Name>{channel_name}</Name>
+					<Subscriber>{channel_subscribers}명</Subscriber>
 				</ProfileInfo>
 			</ChannelInfo>
 		</Container>
@@ -53,42 +78,62 @@ const Container = styled.div`
 const CardHeader = styled.div`
 	display: flex;
 	gap: 14px;
-	padding-bottom: 12px;
+	padding-bottom: 8px;
 	border-bottom: 1px solid black;
 `;
 
-const Category = styled.div`
-	width: 76px;
-	height: 46px;
-	padding: 11px 16px;
-	gap: 10px;
-	border-radius: 4px;
-	background: rgba(48, 213, 200, 1);
-	flex-shrink: 0;
-	text-align: center;
+const IconWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 4px;
 
-	font-size: 12px;
-	font-weight: 800;
-	line-height: 24px;
-	color: rgba(255, 255, 255, 1);
+	span {
+		font-family: var(--font-Pretendard);
+		font-size: 12px;
+		font-weight: 500;
+		line-height: 18px;
+		text-align: center;
+	}
+`;
+
+const IconBox = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background-color: #30d5c8;
 `;
 
 const Title = styled.span`
 	font-size: 20px;
 	font-weight: 800;
-	line-height: 24px;
+	line-height: 28px;
 `;
 
 const Summary = styled.div`
-	/* height: 130px; */
-	padding: 15px 14px 15px 14px;
-	gap: 10px;
+	padding: 8px 14px 8px 14px;
 	border-radius: 4px;
 	background: rgba(244, 245, 247, 1);
 
-	font-size: 14px;
-	font-weight: 400;
-	line-height: 19.6px;
+	p {
+		height: 80px;
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 20px;
+
+		display: -webkit-box;
+		word-break: break-word;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 4;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: normal;
+		box-sizing: border-box;
+	}
 `;
 
 const Thumbnail = styled.img`
