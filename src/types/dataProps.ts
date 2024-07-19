@@ -7,12 +7,13 @@ export interface DataProps {
 	tags: string;
 	thumbnail: string;
 	channel_id: string;
+	channel_thumbnail: string;
+	channel_name: string;
+	channel_subscribers: number;
 	detail_category: string;
 	template_summary: TemplateSummary[];
-	headline: {
-		title: string;
-		sub_title: string;
-	};
+	headline_title: string;
+	headline_subtitle: string;
 	short_summary: string;
 }
 
