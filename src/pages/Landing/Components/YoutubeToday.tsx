@@ -2,25 +2,11 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import TopicCard from "./TopicCard";
 import { DataProps } from "@/types/dataProps";
+import TodayIcon from "@/assets/today.svg?react";
+import InfoIcon from "@/assets/info.svg?react";
+import { YOUTUBE_TOPICS } from "@/constants/topic";
 
 const TODAY_TITLE = "유투브 투데이";
-const YOUTUBE_TOPICS = [
-	"전체",
-	"주식",
-	"부동산",
-	"가상자산",
-	"경제",
-	"정치",
-	"과학",
-	"IT/테크",
-	"자동차",
-	"건강",
-	"자기계발",
-	"요리",
-	"연애/결혼",
-	"패션",
-	"뷰티/메이크업",
-];
 
 interface YoutubeTodayProps {
 	data: DataProps[];
@@ -57,24 +43,42 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 
 	return (
 		<Container>
-			<TodayTitle>{TODAY_TITLE}</TodayTitle>
+			<TodayTitle>
+				<TodayIcon />
+				{TODAY_TITLE}
+			</TodayTitle>
 			<TimeWarning>이 시간이 지나면 읽을 수 없습니다.</TimeWarning>
 			<Time>{timeLeft}</Time>
 			<TopicNav>
-				{YOUTUBE_TOPICS.map((topic) => {
+				{YOUTUBE_TOPICS.map(({ topic, icon }) => {
 					return (
-						<Topic key={topic} onClick={() => handleTopicClick(topic)} selected={selectedTopic === topic}>
-							<Circle></Circle>
-							<span>{topic}</span>
+						<Topic key={topic} onClick={() => handleTopicClick(topic)}>
+							<IconBox selected={selectedTopic === topic}>{icon}</IconBox>
+							{topic === "뷰티/메이크업" ? (
+								<span>
+									뷰티/ <br /> 메이크업
+								</span>
+							) : (
+								<span>{topic}</span>
+							)}
 						</Topic>
 					);
 				})}
 			</TopicNav>
+			<SortOptions>
+				<div>
+					<OptionBtn selected={true}>참여도</OptionBtn>
+					<OptionBtn selected={false}>조회수</OptionBtn>
+				</div>
+				<InfoIcon />
+			</SortOptions>
 			{data
 				.filter((item) => selectedTopic === "전체" || item.section === selectedTopic)
-				.map((item, index) => (
-					<TopicCard key={index} {...item} />
-				))}
+				.map((item, index) => {
+					const topicIcon = YOUTUBE_TOPICS.find((topic) => topic.topic === item.section)?.icon;
+
+					return <TopicCard key={index} icon={topicIcon} {...item} />;
+				})}
 		</Container>
 	);
 };
@@ -97,6 +101,10 @@ const TodayTitle = styled.span`
 	color: rgba(0, 123, 255, 1);
 	letter-spacing: -1px;
 	margin-bottom: 24px;
+
+	display: flex;
+	align-items: center;
+	gap: 12px;
 `;
 
 const TimeWarning = styled.span`
@@ -117,12 +125,13 @@ const Time = styled.span`
 `;
 
 const TopicNav = styled.div`
-	height: 64px;
 	width: calc(100% + 20px);
 	display: flex;
 	gap: 12px;
-	margin-bottom: 24px;
+	margin-bottom: 5px;
 	overflow-x: scroll;
+
+	justify-content: baseline;
 
 	// 스크롤 UI 제거
 	::-webkit-scrollbar {
@@ -132,26 +141,55 @@ const TopicNav = styled.div`
 	scrollbar-width: none;
 `;
 
-const Topic = styled.div<{ selected: boolean }>`
+const Topic = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 	gap: 8px;
 
 	span {
-		font-size: 10px;
+		font-size: 12px;
 		font-weight: 500;
 		line-height: 15px;
-	}
 
-	background-color: ${(props) => (props.selected ? "#333333" : "transparent")};
-	color: ${(props) => (props.selected ? "#ffffff" : "#333333")};
+		display: inline-block;
+		text-align: center;
+	}
 `;
 
-const Circle = styled.div`
-	width: 40px;
-	height: 40px;
-	background-color: blue;
+const IconBox = styled.div<{ selected: boolean }>`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 44px;
+	height: 44px;
 	border-radius: 50%;
+
+	background-color: ${(props) => (props.selected ? "#30D5C8" : "#D9D9D9")};
+	/* color: ${(props) => (props.selected ? "#ffffff" : "#333333")}; */
+`;
+
+const SortOptions = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 16px;
+
+	div {
+		display: flex;
+		gap: 4px;
+	}
+`;
+
+const OptionBtn = styled.button<{ selected: boolean }>`
+	width: 54px;
+	height: 28px;
+	border-radius: 4px;
+	background-color: ${(props) => (props.selected ? "#FFFFFF" : "transparent")};
+
+	font-family: var(--font-Pretendard);
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 14.52px;
+	color: ${(props) => (props.selected ? "#000000E7" : "#7E7E7E")};
 `;
