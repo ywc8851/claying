@@ -95,6 +95,7 @@ const IconWrapper = styled.div`
 		font-weight: 500;
 		line-height: 18px;
 		text-align: center;
+		width: 46px;
 	}
 `;
 
