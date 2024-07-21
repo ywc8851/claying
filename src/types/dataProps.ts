@@ -15,6 +15,8 @@ export interface DataProps {
 	headline_title: string;
 	headline_subtitle: string;
 	short_summary: string;
+	engagement_score: number;
+	views: number;
 }
 
 interface TemplateSummary {
