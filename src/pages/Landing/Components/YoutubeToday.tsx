@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import TopicCard from "./TopicCard";
 import { DataProps } from "@/types/dataProps";
@@ -16,6 +16,8 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 	const [timeLeft, setTimeLeft] = useState<string>("");
 	const [selectedTopic, setSelectedTopic] = useState<string>("전체");
 	const [sortCriteria, setSortCriteria] = useState("engagement");
+	const [isFixed, setIsFixed] = useState(false);
+	const scrollRef = useRef<HTMLDivElement>(null);
 
 	const formatToTwoDigits = (time: number): string => time.toString().padStart(2, "0");
 
@@ -58,6 +60,23 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 		return () => clearInterval(timer);
 	}, []);
 
+	useEffect(() => {
+		const handleScroll = () => {
+			if (scrollRef.current) {
+				const scrollRefTop = scrollRef.current.getBoundingClientRect().top;
+				setIsFixed(scrollRefTop <= 0);
+			}
+		};
+
+		window.addEventListener("scroll", handleScroll);
+
+		handleScroll();
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, []);
+
 	return (
 		<Container>
 			<TodayTitle>
@@ -65,8 +84,8 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 				{TODAY_TITLE}
 			</TodayTitle>
 			<TimeWarning>이 시간이 지나면 읽을 수 없습니다.</TimeWarning>
-			<Time>{timeLeft}</Time>
-			<TopicNav>
+			<Time ref={scrollRef}>{timeLeft}</Time>
+			<TopicNav $isFixed={isFixed}>
 				{YOUTUBE_TOPICS.map(({ topic, icon }) => {
 					return (
 						<Topic key={topic} onClick={() => handleTopicClick(topic)}>
@@ -82,7 +101,7 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 					);
 				})}
 			</TopicNav>
-			<SortOptions>
+			<SortOptions $isFixed={isFixed}>
 				<div>
 					<OptionBtn selected={sortCriteria === "engagement"} onClick={() => handleSortClick("engagement")}>
 						참여도
@@ -138,19 +157,24 @@ const Time = styled.span`
 	line-height: 16px;
 	text-align: left;
 	padding-bottom: 20px;
-	margin-bottom: 12px;
 	border-bottom: 1px solid rgba(0, 0, 0, 1);
 `;
 
-const TopicNav = styled.div`
+const TopicNav = styled.div<{ $isFixed: boolean }>`
 	width: calc(100% + 20px);
+	width: 100%;
 	display: flex;
 	gap: 12px;
+	padding-top: 12px;
 	margin-bottom: 5px;
 	overflow-x: scroll;
 
-	justify-content: baseline;
+	position: ${(props) => (props.$isFixed ? "fixed" : "static")};
+	top: ${(props) => (props.$isFixed ? "52px" : "auto")};
+	left: ${(props) => (props.$isFixed ? "0" : "auto")};
+	z-index: ${(props) => (props.$isFixed ? 10000 : 0)};
 
+	background-color: rgba(242, 242, 242, 1);
 	// 스크롤 UI 제거
 	::-webkit-scrollbar {
 		display: none;
@@ -172,6 +196,7 @@ const Topic = styled.div`
 
 		display: inline-block;
 		text-align: center;
+		width: 46px;
 	}
 `;
 
@@ -187,11 +212,12 @@ const IconBox = styled.div<{ selected: boolean }>`
 	/* color: ${(props) => (props.selected ? "#ffffff" : "#333333")}; */
 `;
 
-const SortOptions = styled.div`
+const SortOptions = styled.div<{ $isFixed: boolean }>`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 16px;
+	margin-top: ${(props) => (props.$isFixed ? "188px" : "0px")};
 
 	div {
 		display: flex;
