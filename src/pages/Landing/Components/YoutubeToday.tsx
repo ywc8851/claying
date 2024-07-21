@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import TopicCard from "./TopicCard";
 import { DataProps } from "@/types/dataProps";
@@ -15,6 +15,7 @@ interface YoutubeTodayProps {
 const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 	const [timeLeft, setTimeLeft] = useState<string>("");
 	const [selectedTopic, setSelectedTopic] = useState<string>("전체");
+	const [sortCriteria, setSortCriteria] = useState("engagement");
 
 	const formatToTwoDigits = (time: number): string => time.toString().padStart(2, "0");
 
@@ -32,6 +33,22 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 	const handleTopicClick = (topic: string) => {
 		setSelectedTopic(topic);
 	};
+
+	const handleSortClick = (criteria: string) => {
+		setSortCriteria(criteria);
+	};
+
+	const filteredAndSortedData = useMemo(() => {
+		const filteredData = data.filter((item) => selectedTopic === "전체" || item.section === selectedTopic);
+		const sortedData = filteredData.sort((a, b) => {
+			if (sortCriteria === "engagement") {
+				return b.engagement_score - a.engagement_score;
+			} else {
+				return b.views - a.views;
+			}
+		});
+		return sortedData;
+	}, [data, selectedTopic, sortCriteria]);
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -67,18 +84,19 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 			</TopicNav>
 			<SortOptions>
 				<div>
-					<OptionBtn selected={true}>참여도</OptionBtn>
-					<OptionBtn selected={false}>조회수</OptionBtn>
+					<OptionBtn selected={sortCriteria === "engagement"} onClick={() => handleSortClick("engagement")}>
+						참여도
+					</OptionBtn>
+					<OptionBtn selected={sortCriteria === "views"} onClick={() => handleSortClick("views")}>
+						조회수
+					</OptionBtn>
 				</div>
 				<InfoIcon />
 			</SortOptions>
-			{data
-				.filter((item) => selectedTopic === "전체" || item.section === selectedTopic)
-				.map((item, index) => {
-					const topicIcon = YOUTUBE_TOPICS.find((topic) => topic.topic === item.section)?.icon;
-
-					return <TopicCard key={index} icon={topicIcon} {...item} />;
-				})}
+			{filteredAndSortedData.map((item, index) => {
+				const topicIcon = YOUTUBE_TOPICS.find((topic) => topic.topic === item.section)?.icon;
+				return <TopicCard key={index} icon={topicIcon} {...item} />;
+			})}
 		</Container>
 	);
 };
