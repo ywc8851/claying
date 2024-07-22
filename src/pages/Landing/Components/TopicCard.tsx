@@ -116,15 +116,15 @@ const Title = styled.span`
 `;
 
 const Summary = styled.div`
-	padding: 8px 14px 8px 14px;
+	padding: 14px;
 	border-radius: 4px;
 	background: rgba(244, 245, 247, 1);
 
 	p {
-		height: 80px;
-		font-size: 14px;
+		height: 108px;
+		font-size: 16px;
 		font-weight: 400;
-		line-height: 20px;
+		line-height: 168%;
 
 		display: -webkit-box;
 		word-break: break-word;
@@ -140,6 +140,7 @@ const Summary = styled.div`
 const Thumbnail = styled.img`
 	object-fit: cover;
 	height: 154px;
+	border-radius: 4px;
 `;
 
 const UploadTime = styled.span`

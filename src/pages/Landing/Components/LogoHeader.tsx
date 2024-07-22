@@ -60,7 +60,6 @@ const Container = styled.header<{ $isDetailPage: boolean }>`
 	padding: 0 20px;
 	position: fixed;
 	top: 0;
-	max-width: 360px;
 	background-color: ${(props) => (props.$isDetailPage ? "rgba(244, 244, 244, 1)" : "rgba(0, 123, 255, 1)")};
 	font-family: "Pretendard Variable";
 
