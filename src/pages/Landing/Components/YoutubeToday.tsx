@@ -5,6 +5,7 @@ import { DataProps } from "@/types/dataProps";
 import TodayIcon from "@/assets/today.svg?react";
 import InfoIcon from "@/assets/info.svg?react";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
+import { calcuateTimeLeft } from "@/utils/formatter";
 
 const TODAY_TITLE = "유투브 투데이";
 
@@ -18,19 +19,6 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 	const [sortCriteria, setSortCriteria] = useState("engagement");
 	const [isFixed, setIsFixed] = useState(false);
 	const scrollRef = useRef<HTMLDivElement>(null);
-
-	const formatToTwoDigits = (time: number): string => time.toString().padStart(2, "0");
-
-	const calcuateTimeLeft = (): string => {
-		const now = new Date();
-		const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0, 0);
-		const diff = tomorrow.getTime() - now.getTime();
-		const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-		const minutes = Math.floor((diff / (1000 * 60)) % 60);
-		const seconds = Math.floor((diff / 1000) % 60);
-
-		return `${formatToTwoDigits(hours)}:${formatToTwoDigits(minutes)}:${formatToTwoDigits(seconds)}`;
-	};
 
 	const handleTopicClick = (topic: string) => {
 		setSelectedTopic(topic);
@@ -162,20 +150,19 @@ const Time = styled.span`
 
 const TopicNav = styled.div<{ $isFixed: boolean }>`
 	width: calc(100% + 20px);
-	width: 100%;
 	display: flex;
 	gap: 12px;
 	padding-top: 12px;
 	margin-bottom: 5px;
-	overflow-x: scroll;
+	background-color: rgba(242, 242, 242, 1);
 
+	padding-right: ${(props) => (props.$isFixed ? "50px" : "auto")};
 	position: ${(props) => (props.$isFixed ? "fixed" : "static")};
 	top: ${(props) => (props.$isFixed ? "52px" : "auto")};
-	left: ${(props) => (props.$isFixed ? "0" : "auto")};
+	left: ${(props) => (props.$isFixed ? "20px" : "auto")};
 	z-index: ${(props) => (props.$isFixed ? 10000 : 0)};
 
-	background-color: rgba(242, 242, 242, 1);
-	// 스크롤 UI 제거
+	overflow-x: scroll;
 	::-webkit-scrollbar {
 		display: none;
 	}

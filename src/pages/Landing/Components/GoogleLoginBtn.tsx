@@ -28,7 +28,7 @@ const GoogleLoginBtn = () => {
 export default GoogleLoginBtn;
 
 const GoogleLoginButton = styled.button`
-	width: 320px;
+	width: calc(100% - 40px);
 	height: 60px;
 	border-radius: 4px;
 	background-color: #007bff;

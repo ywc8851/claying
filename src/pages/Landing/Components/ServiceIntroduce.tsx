@@ -1,28 +1,10 @@
 import styled from "styled-components";
+import { TOPIC_TAGS } from "@/constants/topic";
 
 const SERVICE_TITLE = "유튜브 영상 정보의 홍수 속에서 <br/> 나만 똑똑하게 시청하는 방법.";
 const SERVICE_DESCRIPTION =
-	"500시간이 넘는 영상이 매 분마다 업로드 되는 현재,  <span class='highlight'>오늘 업로드된</span> 주요 <span class='highlight'>영상</span>들을 <span class='highlight'>매일 읽어드립니다.</span>";
-const SERVICE_SUBDESCRIPTION = "<span class='highlight'>18</span>가지 주요 분야 유투브 아티클 매일 읽고 인사이트 얻기!";
-const SERVICE_TAGS = [
-	"주식",
-	"부동산",
-	"가상자산",
-	"경제",
-	"정치",
-	"과학",
-	"IT/테크",
-	"자동차",
-	"건강",
-	"자기계발",
-	"요리",
-	"연애/결혼",
-	"패션",
-	"뷰티/메이크업",
-	"피트니스",
-	"인공지능",
-	"역사",
-];
+	"500시간이 넘는 영상이 매 분마다 업로드 되는 현재, <br/> <span class='highlight'>오늘 업로드된</span> 주요 <span class='highlight'>영상</span>들을 <span class='highlight'>매일 읽어드립니다.</span>";
+const SERVICE_SUBDESCRIPTION = `<span class='highlight'>${TOPIC_TAGS.length}</span>가지 주요 분야 유투브 아티클 매일 읽고 인사이트 얻기!`;
 
 const ServiceIntroduce = () => {
 	return (
@@ -30,7 +12,7 @@ const ServiceIntroduce = () => {
 			<ServiceTitle dangerouslySetInnerHTML={{ __html: SERVICE_TITLE }} />
 			<ServiceDesc dangerouslySetInnerHTML={{ __html: SERVICE_DESCRIPTION }} />
 			<TopicTags>
-				{SERVICE_TAGS.map((topic) => {
+				{TOPIC_TAGS.map((topic) => {
 					return <TopicTag key={topic}>{topic}</TopicTag>;
 				})}
 			</TopicTags>
