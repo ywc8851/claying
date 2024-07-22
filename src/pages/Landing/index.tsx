@@ -52,4 +52,12 @@ const Container = styled.div<{ $isLogin: boolean }>`
 	align-items: center;
 	font-family: "Pretendard Variable";
 	padding-top: ${(props) => (props.$isLogin ? "16px" : "76px")};
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	overflow-y: scroll;
 `;

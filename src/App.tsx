@@ -30,6 +30,11 @@ const AppContainer = styled.div`
 	padding: 0;
 	margin: 0;
 	background-color: white;
+	height: 100vh;
+
+	::-webkit-scrollbar {
+		display: none;
+	}
 `;
 
 const ScrollToTop = () => {
