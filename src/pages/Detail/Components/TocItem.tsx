@@ -1,40 +1,31 @@
 import styled from "styled-components";
 import PlayIcon from "@/assets/play.svg?react";
+import { formatTimeRange } from "@/utils/formatter";
+// import DimmedArea from "@/pages/Landing/Components/DimmedArea";
 
 interface TocItemProps {
-	seq: number;
+	headline: string;
 	start: number;
-	end: number;
 	summary: string;
+	dimmed?: boolean;
 	onClick: () => void;
 }
 
-const TocItem = ({ seq, start, end, summary, onClick }: TocItemProps) => {
-	const formatMinutesToTime = (minutes: number): string => {
-		const hours = Math.floor(minutes / 60);
-		const remainingMinutes = minutes % 60;
-		const formattedHours = hours.toString().padStart(2, "0");
-		const formattedMinutes = remainingMinutes.toString().padStart(2, "0");
-		return `${formattedHours}:${formattedMinutes}`;
-	};
-
-	const formatTimeRange = (startMinutes: number, endMinutes: number): string => {
-		const startTime = formatMinutesToTime(startMinutes);
-		const endTime = formatMinutesToTime(endMinutes);
-		return `${startTime} - ${endTime}`;
-	};
-
+const TocItem = ({ headline, start, summary, dimmed, onClick }: TocItemProps) => {
 	return (
 		<Container>
-			<Title>목차 {seq}</Title>
-			<Thumbnail>
-				<PlayIcon onClick={onClick} />
-			</Thumbnail>
-			<Timeline>
-				<PlayIcon width={16} height={16} />
-				<span>{formatTimeRange(start, end)}</span>
-			</Timeline>
-			<Summary>{summary}</Summary>
+			<ContentWrapper dimmed={dimmed}>
+				<Title>{headline}</Title>
+				<Thumbnail>
+					<PlayIcon onClick={onClick} />
+				</Thumbnail>
+				<Timeline>
+					<PlayIcon width={16} height={16} />
+					<span>{formatTimeRange(start)}</span>
+				</Timeline>
+				<Summary>{summary}</Summary>
+			</ContentWrapper>
+			{/* {dimmed && <DimmedArea />} */}
 		</Container>
 	);
 };
@@ -42,10 +33,14 @@ const TocItem = ({ seq, start, end, summary, onClick }: TocItemProps) => {
 export default TocItem;
 
 const Container = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
-	width: calc(100% - 40px);
 	margin-top: 24px;
+`;
+
+const ContentWrapper = styled.div<{ dimmed?: boolean }>`
+	opacity: ${(props) => (props.dimmed ? 0.8 : 1)};
 `;
 
 const Title = styled.span`
@@ -55,7 +50,6 @@ const Title = styled.span`
 `;
 
 const Thumbnail = styled.div`
-	width: 317px;
 	height: 155px;
 	padding: 42px 0px 41px 0px;
 	background: rgba(217, 217, 217, 1);
@@ -80,9 +74,8 @@ const Timeline = styled.div`
 `;
 
 const Summary = styled.div`
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: 500;
-	line-height: 24px;
+	line-height: 30.24px;
 	letter-spacing: -0.02em;
-	text-align: left;
 `;

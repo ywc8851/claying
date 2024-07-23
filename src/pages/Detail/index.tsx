@@ -6,9 +6,11 @@ import TocItem from "./Components/TocItem";
 import { useRecoilValue } from "recoil";
 import { detailDataState } from "@/store/detailData";
 import { DataProps } from "@/types/dataProps";
+import { userState } from "@/store/user";
 
 const index = () => {
 	const detailData = useRecoilValue<DataProps>(detailDataState);
+	const user = useRecoilValue(userState);
 	const [videoPlayer, setVideoPlayer] = useState<any>(null);
 	const [isFixed, setIsFixed] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +19,6 @@ const index = () => {
 
 	const onPlayerReady: YouTubeProps["onReady"] = (event) => {
 		setVideoPlayer(event.target);
-		event.target.pauseVideo();
 		setIsLoading(false);
 	};
 
@@ -34,13 +35,11 @@ const index = () => {
 	};
 
 	const opts: YouTubeProps["opts"] = {
+		// width: "360",
 		height: "202",
-		width: "360",
 		playerVars: {
-			autoplay: 0,
+			autoplay: 1,
 			rel: 0,
-			start: 5,
-			end: 10,
 			disablekb: 1,
 		},
 	};
@@ -58,8 +57,6 @@ const index = () => {
 		handleScroll();
 		setIsLoading(true);
 
-		console.log(detailData.template_summary);
-
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
 		};
@@ -67,10 +64,14 @@ const index = () => {
 
 	return (
 		<Container $isFixed={isFixed}>
-			<LogoHeader title={isFixed ? detailData.title : ""} />
+			<LogoHeader title={isFixed ? `${detailData.headline_title}, ${detailData.headline_subtitle}` : ""} />
 			<PageInfo ref={scrollRef}>
 				<Category>{detailData.section}</Category>
-				<Title>{detailData.title}</Title>
+				<Title>
+					{detailData.headline_title},
+					<br />
+					{detailData.headline_subtitle}
+				</Title>
 				<Upload>{detailData.upload_date} 업로드</Upload>
 			</PageInfo>
 			<VideoContainer ref={videoContainerRef} $isFixed={isFixed}>
@@ -83,23 +84,29 @@ const index = () => {
 					style={{ display: isLoading ? "none" : "block" }}
 				/>
 			</VideoContainer>
-			<TOC $isFixed={isFixed}>
+			<Preview $isFixed={isFixed}>
+				<div>
+					<span>🔎 미리보기</span>
+					<span>{detailData.short_summary}</span>
+				</div>
+			</Preview>
+			<TOC>
 				<div>목차</div>
 				<div>
-					{detailData.template_summary.map((_, index) => {
-						return <span key={index}>목차 {index + 1}</span>;
+					{detailData.template_summary.map(({ headline }, index) => {
+						return <span key={index}>{headline} </span>;
 					})}
 				</div>
 			</TOC>
 			<Contents>
-				{detailData.template_summary.map(({ start_time, end_time, contents }, index) => {
+				{detailData.template_summary.map(({ headline, start_time, contents }, index) => {
 					return (
 						<TocItem
 							key={index}
-							seq={index + 1}
+							headline={headline}
 							start={Math.floor(Number(start_time))}
-							end={Math.floor(Number(end_time))}
 							summary={contents}
+							dimmed={index >= 3 && user.name === ""}
 							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
 						/>
 					);
@@ -116,7 +123,7 @@ const Container = styled.div<{ $isFixed: boolean }>`
 	flex-direction: column;
 	font-family: "Pretendard Variable";
 	padding-top: 76px;
-	/* padding-top: ${(props) => (props.$isFixed ? "224px" : "76px")}; */
+	background-color: white;
 `;
 
 const PageInfo = styled.div`
@@ -147,8 +154,35 @@ const Upload = styled.span`
 	line-height: 14.4px;
 `;
 
-const TOC = styled.div<{ $isFixed: boolean }>`
-	margin-top: ${(props) => (props.$isFixed ? "178px" : "30px")};
+const Preview = styled.div<{ $isFixed: boolean }>`
+	padding: 20px;
+	margin-top: ${(props) => (props.$isFixed ? "176px" : "28px")};
+
+	div {
+		display: flex;
+		flex-direction: column;
+		background-color: #f2f2f2;
+		padding: 20px;
+		gap: 12px;
+	}
+
+	span {
+		display: block;
+		font-family: "Pretendard Variable";
+		font-size: 16px;
+	}
+
+	span:first-child {
+		font-weight: 600;
+	}
+	span:last-child {
+		font-weight: 400;
+		line-height: 26.88px;
+	}
+`;
+
+const TOC = styled.div`
+	margin-top: 24px;
 	padding: 0 20px;
 
 	div:first-child {
@@ -177,16 +211,23 @@ const Contents = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: 0 20px;
 `;
 
 const VideoContainer = styled.div<{ $isFixed: boolean }>`
 	position: ${(props) => (props.$isFixed ? "fixed" : "static")};
 	top: ${(props) => (props.$isFixed ? "52px" : "auto")};
 	left: ${(props) => (props.$isFixed ? "0" : "auto")};
-	width: 100%;
 	z-index: 1000;
 	display: flex;
-	justify-content: center;
+
+	div {
+		width: 100vw;
+
+		iframe {
+			width: 100vw;
+		}
+	}
 `;
 
 const LoaderAnimation = keyframes`
