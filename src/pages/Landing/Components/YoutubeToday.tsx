@@ -8,6 +8,9 @@ import { YOUTUBE_TOPICS } from "@/constants/topic";
 import { calcuateTimeLeft } from "@/utils/formatter";
 
 const TODAY_TITLE = "유투브 투데이";
+const TOOLTIP_OPTION1 =
+	"조회수 대비 참여도(좋아요, 댓글 수 등)가 높은 순으로 오늘 업로드된 최대 3개의 영상이 각 주제 별로 노출됩니다.";
+const TOOLTIP_OPTION2 = "조회수가 높은 순으로 오늘 업로드된 최대 3개의 영상이 각 주제 별로 노출됩니다.";
 
 interface YoutubeTodayProps {
 	data: DataProps[];
@@ -17,8 +20,10 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 	const [timeLeft, setTimeLeft] = useState<string>("");
 	const [selectedTopic, setSelectedTopic] = useState<string>("전체");
 	const [sortCriteria, setSortCriteria] = useState("engagement");
+	const [tooltipVisible, setTooltipVisible] = useState(false);
 	const [isFixed, setIsFixed] = useState(false);
 	const scrollRef = useRef<HTMLDivElement>(null);
+	const infoIconRef = useRef<HTMLDivElement>(null);
 
 	const handleTopicClick = (topic: string) => {
 		setSelectedTopic(topic);
@@ -26,6 +31,16 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 
 	const handleSortClick = (criteria: string) => {
 		setSortCriteria(criteria);
+	};
+
+	const handleClickIcon = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		setTooltipVisible(!tooltipVisible);
+	};
+	const handleClickOutside = (e: MouseEvent) => {
+		if (infoIconRef.current && !infoIconRef.current.contains(e.target as Node)) {
+			setTooltipVisible(false);
+		}
 	};
 
 	const filteredAndSortedData = useMemo(() => {
@@ -65,6 +80,15 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (tooltipVisible) document.addEventListener("click", handleClickOutside);
+		else document.removeEventListener("click", handleClickOutside);
+
+		return () => {
+			document.removeEventListener("click", handleClickOutside);
+		};
+	}, [tooltipVisible]);
+
 	return (
 		<Container>
 			<TodayTitle>
@@ -98,7 +122,14 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 						조회수
 					</OptionBtn>
 				</div>
-				<InfoIcon />
+				<TooltipSection ref={infoIconRef}>
+					<InfoIcon onClick={handleClickIcon} />
+					{tooltipVisible && (
+						<Tooltip $tooltipVisible={tooltipVisible}>
+							<span>{sortCriteria === "engagement" ? TOOLTIP_OPTION1 : TOOLTIP_OPTION2}</span>
+						</Tooltip>
+					)}
+				</TooltipSection>
 			</SortOptions>
 			{filteredAndSortedData.map((item, index) => {
 				const topicIcon = YOUTUBE_TOPICS.find((topic) => topic.topic === item.section)?.icon;
@@ -117,6 +148,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin-top: 36px;
+	font-family: "Pretendard Variable";
 `;
 
 const TodayTitle = styled.span`
@@ -204,11 +236,36 @@ const SortOptions = styled.div<{ $isFixed: boolean }>`
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 16px;
-	margin-top: ${(props) => (props.$isFixed ? "188px" : "0px")};
+	margin-top: ${(props) => (props.$isFixed ? "130px" : "0px")};
 
 	div {
 		display: flex;
 		gap: 4px;
+	}
+`;
+
+const TooltipSection = styled.div`
+	position: relative;
+	cursor: pointer;
+`;
+
+const Tooltip = styled.div<{ $tooltipVisible: boolean }>`
+	position: absolute;
+	right: 0;
+	top: 20px;
+	background-color: #555555;
+	color: #fff;
+	z-index: 1000;
+	display: ${(props) => (props.$tooltipVisible ? "block" : "none")};
+
+	width: 135px;
+	padding: 8px 13px;
+	border-radius: 12px;
+
+	span {
+		font-size: 8px;
+		font-weight: 500;
+		line-height: 9.68px;
 	}
 `;
 
