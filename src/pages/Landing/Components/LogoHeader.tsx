@@ -9,7 +9,7 @@ interface LogoHeaderProps {
 	title?: string;
 }
 
-const LogoHeader = ({ title }: LogoHeaderProps) => {
+const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 	const user = useRecoilValue(userState);
 	const setUser = useSetRecoilState(userState);
 	const navigate = useNavigate();
@@ -40,10 +40,13 @@ const LogoHeader = ({ title }: LogoHeaderProps) => {
 	return (
 		<Container $isDetailPage={isDetailPage}>
 			{isDetailPage && <BackIcon onClick={goBack} />}
-			<span onClick={goHome} className="logo">
-				로고
-			</span>
-			{title && <Title>{title}</Title>}
+			{title === "" ? (
+				<span onClick={goHome} className="logo">
+					로고
+				</span>
+			) : (
+				<Title>{title}</Title>
+			)}
 			{user.picture !== "" && (
 				<ProfileImage onClick={logOut}>
 					{user.picture !== "" && <img src={user.picture} alt="User profile" />}
@@ -65,7 +68,7 @@ const Container = styled.header<{ $isDetailPage: boolean }>`
 
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	gap: 20px;
 	z-index: 1000;
 
 	.logo {
@@ -81,7 +84,6 @@ const Title = styled.span`
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	max-width: 60%;
 `;
 
 const ProfileImage = styled.div`
