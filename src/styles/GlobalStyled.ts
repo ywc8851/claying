@@ -13,6 +13,14 @@ const GlobalStyles = createGlobalStyle`
       box-sizing: border-box;
     }
 
+    html {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      background-color: #ffffff;
+    }
+
     body {
       display: flex;
       justify-content: center;
