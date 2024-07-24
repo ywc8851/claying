@@ -2,15 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import LogoHeader from "./../Landing/Components/LogoHeader";
 import YouTube, { YouTubeProps } from "react-youtube";
-import TocItem from "./Components/TocItem";
 import { useRecoilValue } from "recoil";
 import { detailDataState } from "@/store/detailData";
 import { DataProps } from "@/types/dataProps";
-import { userState } from "@/store/user";
+import Contents from "./Components/Contents";
 
 const index = () => {
 	const detailData = useRecoilValue<DataProps>(detailDataState);
-	const user = useRecoilValue(userState);
 	const [videoPlayer, setVideoPlayer] = useState<any>(null);
 	const [isFixed, setIsFixed] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -98,20 +96,7 @@ const index = () => {
 					})}
 				</div>
 			</TOC>
-			<Contents>
-				{detailData.template_summary.map(({ headline, start_time, contents }, index) => {
-					return (
-						<TocItem
-							key={index}
-							headline={headline}
-							start={Math.floor(Number(start_time))}
-							summary={contents}
-							dimmed={index >= 3 && user.name === ""}
-							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
-						/>
-					);
-				})}
-			</Contents>
+			<Contents detailData={detailData} handleTocItemClick={handleTocItemClick} />
 		</Container>
 	);
 };
@@ -207,12 +192,12 @@ const TOC = styled.div`
 	}
 `;
 
-const Contents = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 0 20px;
-`;
+// const Contents = styled.div`
+// 	display: flex;
+// 	flex-direction: column;
+// 	align-items: center;
+// 	padding: 0 20px;
+// `;
 
 const VideoContainer = styled.div<{ $isFixed: boolean }>`
 	position: ${(props) => (props.$isFixed ? "fixed" : "static")};

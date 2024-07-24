@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import PlayIcon from "@/assets/play.svg?react";
 import { formatTimeRange } from "@/utils/formatter";
-// import DimmedArea from "@/pages/Landing/Components/DimmedArea";
+import DimmedArea from "./DimmedArea";
 
 interface TocItemProps {
 	headline: string;
@@ -25,7 +25,7 @@ const TocItem = ({ headline, start, summary, dimmed, onClick }: TocItemProps) =>
 				</Timeline>
 				<Summary>{summary}</Summary>
 			</ContentWrapper>
-			{/* {dimmed && <DimmedArea />} */}
+			{dimmed && <DimmedArea />}
 		</Container>
 	);
 };
@@ -44,7 +44,7 @@ const ContentWrapper = styled.div<{ dimmed?: boolean }>`
 `;
 
 const Title = styled.span`
-	font-size: 20px;
+	font-size: 24px;
 	font-weight: 600;
 	line-height: 23.87px;
 `;
@@ -75,7 +75,7 @@ const Timeline = styled.div`
 
 const Summary = styled.div`
 	font-size: 18px;
-	font-weight: 500;
-	line-height: 30.24px;
+	font-weight: 400;
+	line-height: 168%;
 	letter-spacing: -0.02em;
 `;
