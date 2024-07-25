@@ -15,7 +15,9 @@ const RecommendCard = (props: RecommendCardProps) => {
 
 	const handleNavigate = () => {
 		setTopicState(props);
-		navigate("/detail");
+		window.scrollTo(0, 0);
+		navigate("/detail", { replace: true });
+		window.location.reload();
 	};
 
 	return (
