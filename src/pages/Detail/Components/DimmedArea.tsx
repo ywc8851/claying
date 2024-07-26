@@ -31,6 +31,7 @@ export default DimmedArea;
 
 const Container = styled.div`
 	position: absolute;
+	top: -4px;
 	padding-top: 72px;
 	padding-bottom: 60px;
 	background-color: rgba(255, 255, 255, 0.9);
