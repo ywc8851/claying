@@ -2,6 +2,7 @@ import styled from "styled-components";
 import PlayIcon from "@/assets/play.svg?react";
 import { formatTimeRange } from "@/utils/formatter";
 import DimmedArea from "./DimmedArea";
+import { forwardRef } from "react";
 
 interface TocItemProps {
 	headline: string;
@@ -11,9 +12,9 @@ interface TocItemProps {
 	onClick: () => void;
 }
 
-const TocItem = ({ headline, start, summary, dimmed, onClick }: TocItemProps) => {
+const TocItem = forwardRef<HTMLDivElement, TocItemProps>(({ headline, start, summary, dimmed, onClick }, ref) => {
 	return (
-		<Container>
+		<Container ref={ref}>
 			<ContentWrapper dimmed={dimmed}>
 				<Title>{headline}</Title>
 				<Thumbnail>
@@ -28,7 +29,7 @@ const TocItem = ({ headline, start, summary, dimmed, onClick }: TocItemProps) =>
 			{dimmed && <DimmedArea />}
 		</Container>
 	);
-};
+});
 
 export default TocItem;
 

@@ -4,6 +4,7 @@ import Recommend from "./Recommend";
 import { DataProps } from "@/types/dataProps";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/store/user";
+import { useEffect, useRef, useState } from "react";
 
 interface ContentsProps {
 	detailData: DataProps;
@@ -12,8 +13,18 @@ interface ContentsProps {
 
 const Contents = ({ detailData, handleTocItemClick }: ContentsProps) => {
 	const user = useRecoilValue(userState);
+	const [tocItemHeight, setTocItemHeight] = useState(0);
+	const tocItemsRef = useRef<HTMLDivElement | null>(null);
 
 	const hasDimmedItem = detailData.template_summary.some((_, index) => index >= 3 && user.name === "");
+
+	useEffect(() => {
+		const calculateHeight = () => {
+			if (tocItemsRef.current) setTocItemHeight(tocItemsRef.current.clientHeight);
+		};
+
+		calculateHeight();
+	}, [detailData.template_summary]);
 
 	return (
 		<>
@@ -21,6 +32,7 @@ const Contents = ({ detailData, handleTocItemClick }: ContentsProps) => {
 				{detailData.template_summary.map(({ headline, start_time, contents }, index) => (
 					<TocItem
 						key={index}
+						ref={index === 3 ? tocItemsRef : null}
 						headline={headline}
 						start={Math.floor(Number(start_time))}
 						summary={contents}
@@ -29,7 +41,7 @@ const Contents = ({ detailData, handleTocItemClick }: ContentsProps) => {
 					/>
 				))}
 			</ContentWrapper>
-			<RecommendWrapper hasDimmedItem={hasDimmedItem}>
+			<RecommendWrapper hasDimmedItem={hasDimmedItem} tocItemHeight={tocItemHeight}>
 				<Recommend detailData={detailData} />
 			</RecommendWrapper>
 		</>
@@ -45,6 +57,6 @@ const ContentWrapper = styled.div<{ hasDimmedItem: boolean }>`
 	padding: 0 20px;
 `;
 
-const RecommendWrapper = styled.div<{ hasDimmedItem: boolean }>`
-	margin-top: ${(props) => (props.hasDimmedItem ? "200px" : "0")};
+const RecommendWrapper = styled.div<{ hasDimmedItem: boolean; tocItemHeight: number }>`
+	margin-top: ${(props) => (props.hasDimmedItem ? `${531 - props.tocItemHeight}px` : "0")};
 `;
