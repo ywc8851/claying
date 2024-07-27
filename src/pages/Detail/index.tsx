@@ -91,8 +91,8 @@ const index = () => {
 			<TOC>
 				<div>목차</div>
 				<div>
-					{detailData.template_summary.map(({ headline }, index) => {
-						return <span key={index}>{headline} </span>;
+					{detailData.template_summary.map(({ title }, index) => {
+						return <span key={index}>{title} </span>;
 					})}
 				</div>
 			</TOC>

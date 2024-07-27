@@ -20,8 +20,8 @@ export interface DataProps {
 }
 
 interface TemplateSummary {
-	headline: string;
-	contents: string;
+	title: string;
+	detail_contents: string;
 	start_time: string;
 	end_time: string;
 }

@@ -29,13 +29,13 @@ const Contents = ({ detailData, handleTocItemClick }: ContentsProps) => {
 	return (
 		<>
 			<ContentWrapper hasDimmedItem={hasDimmedItem}>
-				{detailData.template_summary.map(({ headline, start_time, contents }, index) => (
+				{detailData.template_summary.map(({ title, start_time, detail_contents }, index) => (
 					<TocItem
 						key={index}
 						ref={index === 3 ? tocItemsRef : null}
-						headline={headline}
+						title={title}
 						start={Math.floor(Number(start_time))}
-						summary={contents}
+						summary={detail_contents}
 						dimmed={index >= 3 && user.name === ""}
 						onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
 					/>

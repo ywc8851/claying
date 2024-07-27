@@ -5,18 +5,18 @@ import DimmedArea from "./DimmedArea";
 import { forwardRef } from "react";
 
 interface TocItemProps {
-	headline: string;
+	title: string;
 	start: number;
 	summary: string;
 	dimmed?: boolean;
 	onClick: () => void;
 }
 
-const TocItem = forwardRef<HTMLDivElement, TocItemProps>(({ headline, start, summary, dimmed, onClick }, ref) => {
+const TocItem = forwardRef<HTMLDivElement, TocItemProps>(({ title, start, summary, dimmed, onClick }, ref) => {
 	return (
 		<Container ref={ref}>
 			<ContentWrapper dimmed={dimmed}>
-				<Title>{headline}</Title>
+				<Title>{title}</Title>
 				<Thumbnail>
 					<PlayIcon onClick={onClick} />
 				</Thumbnail>
