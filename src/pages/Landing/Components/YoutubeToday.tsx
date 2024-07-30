@@ -6,6 +6,7 @@ import TodayIcon from "@/assets/today.svg?react";
 import InfoIcon from "@/assets/info.svg?react";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
 import { calcuateTimeLeft } from "@/utils/formatter";
+import GoToTopBtn from "./GoToTopBtn";
 
 const TODAY_TITLE = "유투브 투데이";
 const TOOLTIP_OPTION1 =
@@ -135,6 +136,7 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 				const topicIcon = YOUTUBE_TOPICS.find((topic) => topic.topic === item.section)?.icon;
 				return <TopicCard key={index} icon={topicIcon} {...item} />;
 			})}
+			<GoToTopBtn isVisible={isFixed} />
 		</Container>
 	);
 };
