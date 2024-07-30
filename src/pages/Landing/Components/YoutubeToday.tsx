@@ -25,9 +25,15 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 	const [isFixed, setIsFixed] = useState(false);
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const infoIconRef = useRef<HTMLDivElement>(null);
+	const sortOptionsRef = useRef<HTMLDivElement>(null);
 
 	const handleTopicClick = (topic: string) => {
 		setSelectedTopic(topic);
+
+		if (sortOptionsRef.current) {
+			const { top } = sortOptionsRef.current.getBoundingClientRect();
+			window.scrollTo({ top: window.scrollY + top - 94 - 52, behavior: "smooth" });
+		}
 	};
 
 	const handleSortClick = (criteria: string) => {
@@ -114,7 +120,7 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 					);
 				})}
 			</TopicNav>
-			<SortOptions $isFixed={isFixed}>
+			<SortOptions $isFixed={isFixed} ref={sortOptionsRef}>
 				<div>
 					<OptionBtn selected={sortCriteria === "engagement"} onClick={() => handleSortClick("engagement")}>
 						참여도
