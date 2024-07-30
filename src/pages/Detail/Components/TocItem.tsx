@@ -3,6 +3,7 @@ import PlayIcon from "@/assets/play.svg?react";
 import { formatTimeRange } from "@/utils/formatter";
 import DimmedArea from "./DimmedArea";
 import { forwardRef } from "react";
+import { formatSummary } from "@/utils/formatter";
 
 interface TocItemProps {
 	title: string;
@@ -24,7 +25,7 @@ const TocItem = forwardRef<HTMLDivElement, TocItemProps>(({ title, start, summar
 					<PlayIcon width={16} height={16} />
 					<span>{formatTimeRange(start)}</span>
 				</Timeline>
-				<Summary>{summary}</Summary>
+				<Summary>{formatSummary(summary)}</Summary>
 			</ContentWrapper>
 			{dimmed && <DimmedArea />}
 		</Container>
@@ -37,7 +38,7 @@ const Container = styled.div`
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	margin-top: 24px;
+	margin-top: 60px;
 `;
 
 const ContentWrapper = styled.div<{ dimmed?: boolean }>`
@@ -47,7 +48,7 @@ const ContentWrapper = styled.div<{ dimmed?: boolean }>`
 const Title = styled.span`
 	font-size: 24px;
 	font-weight: 600;
-	line-height: 23.87px;
+	line-height: 140%;
 `;
 
 const Thumbnail = styled.div`
@@ -78,5 +79,15 @@ const Summary = styled.div`
 	font-size: 18px;
 	font-weight: 400;
 	line-height: 168%;
-	letter-spacing: -0.02em;
+	margin-left: 8px;
+
+	span {
+		display: block;
+	}
+
+	span.line-break {
+		font-weight: 400;
+		line-height: 168%;
+		margin-bottom: 12px;
+	}
 `;

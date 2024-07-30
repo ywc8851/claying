@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import { detailDataState } from "@/store/detailData";
 import { DataProps } from "@/types/dataProps";
 import Contents from "./Components/Contents";
+import { formatSummary } from "@/utils/formatter";
 
 const index = () => {
 	const detailData = useRecoilValue<DataProps>(detailDataState);
@@ -85,7 +86,7 @@ const index = () => {
 			<Preview $isFixed={isFixed}>
 				<div>
 					<span>🔎 미리보기</span>
-					<span>{detailData.short_summary}</span>
+					{formatSummary(detailData.short_summary)}
 				</div>
 			</Preview>
 			<TOC>
@@ -160,9 +161,15 @@ const Preview = styled.div<{ $isFixed: boolean }>`
 	span:first-child {
 		font-weight: 600;
 	}
-	span:last-child {
+	/* span:last-child {
 		font-weight: 400;
 		line-height: 26.88px;
+	} */
+
+	span.line-break {
+		font-weight: 400;
+		line-height: 160%;
+		margin-bottom: 8px;
 	}
 `;
 
@@ -181,23 +188,16 @@ const TOC = styled.div`
 	}
 
 	div:nth-child(2) {
-		padding: 12px 16px 12px 16px;
+		padding: 20px;
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 24px;
 		background-color: rgba(242, 242, 242, 1);
-		font-size: 16px;
+		font-size: 18px;
 		font-weight: 600;
 		line-height: 19.09px;
 	}
 `;
-
-// const Contents = styled.div`
-// 	display: flex;
-// 	flex-direction: column;
-// 	align-items: center;
-// 	padding: 0 20px;
-// `;
 
 const VideoContainer = styled.div<{ $isFixed: boolean }>`
 	position: ${(props) => (props.$isFixed ? "fixed" : "static")};

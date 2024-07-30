@@ -48,8 +48,8 @@ const Container = styled.div`
 
 const Thumbnail = styled.img`
 	object-fit: cover;
-	width: 90px;
-	height: 52px;
+	width: 120px;
+	height: 64px;
 `;
 
 const Info = styled.div`
@@ -59,9 +59,9 @@ const Info = styled.div`
 `;
 
 const Title = styled.span`
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: 400;
-	line-height: 16.71px;
+	line-height: 140%;
 `;
 
 const UploadTime = styled.span`

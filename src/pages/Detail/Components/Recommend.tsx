@@ -134,14 +134,14 @@ const Tooltip = styled.div<{ $tooltipVisible: boolean }>`
 	z-index: 1000;
 	display: ${(props) => (props.$tooltipVisible ? "block" : "none")};
 
-	width: 135px;
-	padding: 8px 13px;
+	width: 180px;
+	padding: 12px 13px;
 	border-radius: 12px;
 
 	span {
-		font-size: 8px;
+		font-size: 12px;
 		font-weight: 500;
-		line-height: 9.68px;
+		line-height: 140%;
 	}
 `;
 

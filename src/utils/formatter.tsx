@@ -38,3 +38,17 @@ export const formatTimeRange = (startMinutes: number): string => {
 	const startTime = formatMinutesToTime(startMinutes);
 	return `${startTime} ~`;
 };
+
+// 소수점을 포함한 숫자를 예외 처리하는 정규 표현식
+export const formatSummary = (summary: string) => {
+	const regex = /(?<!\d\.\d)\. /g;
+	return summary
+		.split(regex)
+		.filter((sentence) => sentence.trim() !== "")
+		.map((sentence, index, array) => (
+			<span key={index} className="line-break">
+				{sentence.trim()}
+				{index !== array.length - 1 ? "." : ""}
+			</span>
+		));
+};
