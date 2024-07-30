@@ -181,23 +181,16 @@ const TOC = styled.div`
 	}
 
 	div:nth-child(2) {
-		padding: 12px 16px 12px 16px;
+		padding: 20px;
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 24px;
 		background-color: rgba(242, 242, 242, 1);
-		font-size: 16px;
+		font-size: 18px;
 		font-weight: 600;
 		line-height: 19.09px;
 	}
 `;
-
-// const Contents = styled.div`
-// 	display: flex;
-// 	flex-direction: column;
-// 	align-items: center;
-// 	padding: 0 20px;
-// `;
 
 const VideoContainer = styled.div<{ $isFixed: boolean }>`
 	position: ${(props) => (props.$isFixed ? "fixed" : "static")};
