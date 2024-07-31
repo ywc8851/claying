@@ -5,8 +5,8 @@ import { DataProps } from "@/types/dataProps";
 import TodayIcon from "@/assets/today.svg?react";
 import InfoIcon from "@/assets/info.svg?react";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
-import { calcuateTimeLeft } from "@/utils/formatter";
 import GoToTopBtn from "./GoToTopBtn";
+import CountdownTimer from "@/components/CountdownTimer";
 
 const TODAY_TITLE = "유투브 투데이";
 const TOOLTIP_OPTION1 =
@@ -18,7 +18,6 @@ interface YoutubeTodayProps {
 }
 
 const YoutubeToday = ({ data }: YoutubeTodayProps) => {
-	const [timeLeft, setTimeLeft] = useState<string>("");
 	const [selectedTopic, setSelectedTopic] = useState<string>("전체");
 	const [sortCriteria, setSortCriteria] = useState("engagement");
 	const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -63,14 +62,6 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 	}, [data, selectedTopic, sortCriteria]);
 
 	useEffect(() => {
-		const timer = setInterval(() => {
-			setTimeLeft(calcuateTimeLeft());
-		}, 1000);
-
-		return () => clearInterval(timer);
-	}, []);
-
-	useEffect(() => {
 		const handleScroll = () => {
 			if (scrollRef.current) {
 				const scrollRefTop = scrollRef.current.getBoundingClientRect().top;
@@ -102,8 +93,7 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 				<TodayIcon />
 				{TODAY_TITLE}
 			</TodayTitle>
-			<TimeWarning>이 시간이 지나면 읽을 수 없습니다.</TimeWarning>
-			<Time ref={scrollRef}>{timeLeft}</Time>
+			<CountdownTimer scrollRef={scrollRef} />
 			<TopicNav $isFixed={isFixed}>
 				{YOUTUBE_TOPICS.map(({ topic, icon }) => {
 					return (
@@ -170,22 +160,6 @@ const TodayTitle = styled.span`
 	display: flex;
 	align-items: center;
 	gap: 12px;
-`;
-
-const TimeWarning = styled.span`
-	font-size: 14px;
-	font-weight: 400;
-	line-height: 16.71px;
-	margin-bottom: 20px;
-`;
-
-const Time = styled.span`
-	font-size: 32px;
-	font-weight: 500;
-	line-height: 16px;
-	text-align: left;
-	padding-bottom: 20px;
-	border-bottom: 1px solid rgba(0, 0, 0, 1);
 `;
 
 const TopicNav = styled.div<{ $isFixed: boolean }>`

@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import { dataState } from "@/store/data";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
 import RecommendCard from "./RecommendCard";
+import CountdownTimer from "@/components/CountdownTimer";
 
 const TOOLTIP_OPTION1 =
 	"조회수 대비 참여도(좋아요, 댓글 수 등)가 높은 순으로 오늘 업로드된 최대 3개의 영상이 각 주제 별로 노출됩니다.";
@@ -19,6 +20,7 @@ const Recommend = ({ detailData }: RecommendProps) => {
 	const RECOMMEND_TITLE = `👇 다음&nbsp;<span class='highlight'>${detailData.section}</span>&nbsp;유튜브 아티클 확인하기`;
 	const [sortCriteria, setSortCriteria] = useState("engagement");
 	const [tooltipVisible, setTooltipVisible] = useState(false);
+
 	const infoIconRef = useRef<HTMLDivElement>(null);
 	const apiData = useRecoilValue<DataProps[]>(dataState);
 
@@ -61,6 +63,7 @@ const Recommend = ({ detailData }: RecommendProps) => {
 	return (
 		<Container>
 			<RecommendTitle dangerouslySetInnerHTML={{ __html: RECOMMEND_TITLE }} />
+			<CountdownTimer />
 			<SortOptions>
 				<div>
 					<OptionBtn selected={sortCriteria === "engagement"} onClick={() => handleSortClick("engagement")}>
@@ -100,7 +103,7 @@ const RecommendTitle = styled.span`
 	align-items: center;
 	font-size: 16px;
 	font-weight: 400;
-	margin-bottom: 16px;
+	margin-bottom: 20px;
 
 	.highlight {
 		font-weight: 600;
@@ -112,6 +115,7 @@ const SortOptions = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	margin-top: 32px;
 	margin-bottom: 16px;
 
 	div {
