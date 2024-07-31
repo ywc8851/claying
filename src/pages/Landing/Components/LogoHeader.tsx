@@ -67,6 +67,7 @@ const Container = styled.header<{ $isDetailPage: boolean }>`
 	font-family: "Pretendard Variable";
 
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
 	gap: 20px;
 	z-index: 1000;
