@@ -6,9 +6,9 @@ import ServiceIntroduce from "./Components/ServiceIntroduce";
 import LogoHeader from "./Components/LogoHeader";
 import YoutubeToday from "./Components/YoutubeToday";
 import Footer from "./Components/Footer";
-import GoogleLoginBtn from "./Components/GoogleLoginBtn";
 import { dataState } from "@/store/data";
 import { userState } from "@/store/user";
+import GoogleLogin from "@/components/GoogleLogin";
 
 const index = () => {
 	const setApiData = useSetRecoilState(dataState);
@@ -35,7 +35,7 @@ const index = () => {
 			{user.name === "" && (
 				<>
 					<ServiceIntroduce />
-					<GoogleLoginBtn />
+					<GoogleLogin variant="button" text="구글 계정 연동해서 무료 구독하기" />
 				</>
 			)}
 			<YoutubeToday data={apiData} />

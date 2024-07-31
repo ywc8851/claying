@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import GoogleLoginBtn from "../../Landing/Components/GoogleLoginBtn";
 import { TOPIC_TAGS } from "@/constants/topic";
 import InfoIcon from "@/assets/subInfo.svg?react";
-import GoogleLoginLink from "./GoogleLoginLink";
+import GoogleLogin from "@/components/GoogleLogin";
 
 const DIMMED_TITLE =
 	"지금 바로 무료 구독하고 <br/> 19개의 주요 분야의 영상을 <br/> <span class='highlight'>매일 읽어보세요.</span>";
@@ -16,12 +15,12 @@ const DimmedArea = () => {
 					return <TopicTag key={topic}>{topic}</TopicTag>;
 				})}
 			</TopicTags>
-			<GoogleLoginBtn />
+			<GoogleLogin variant="button" text="구글 계정 연동해서 무료 구독하기" />
 			<Info>
 				<span>
 					<InfoIcon /> 이미 구독중이라면?
 				</span>
-				<GoogleLoginLink />
+				<GoogleLogin variant="link" text="로그인해서 피드 마저 읽기" />
 			</Info>
 		</Container>
 	);
