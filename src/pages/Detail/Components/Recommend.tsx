@@ -1,16 +1,12 @@
 import styled from "styled-components";
-import { useEffect, useMemo, useRef, useState } from "react";
-import InfoIcon from "@/assets/info.svg?react";
+import { useMemo, useState } from "react";
 import { DataProps } from "@/types/dataProps";
 import { useRecoilValue } from "recoil";
 import { dataState } from "@/store/data";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
 import RecommendCard from "./RecommendCard";
 import CountdownTimer from "@/components/CountdownTimer";
-
-const TOOLTIP_OPTION1 =
-	"조회수 대비 참여도(좋아요, 댓글 수 등)가 높은 순으로 오늘 업로드된 최대 3개의 영상이 각 주제 별로 노출됩니다.";
-const TOOLTIP_OPTION2 = "조회수가 높은 순으로 오늘 업로드된 최대 3개의 영상이 각 주제 별로 노출됩니다.";
+import SortOptions from "@/components/SortOptions";
 
 interface RecommendProps {
 	detailData: DataProps;
@@ -21,7 +17,6 @@ const Recommend = ({ detailData }: RecommendProps) => {
 	const [sortCriteria, setSortCriteria] = useState("engagement");
 	const [tooltipVisible, setTooltipVisible] = useState(false);
 
-	const infoIconRef = useRef<HTMLDivElement>(null);
 	const apiData = useRecoilValue<DataProps[]>(dataState);
 
 	const handleSortClick = (criteria: string) => {
@@ -31,12 +26,6 @@ const Recommend = ({ detailData }: RecommendProps) => {
 	const handleClickIcon = (e: React.MouseEvent) => {
 		e.stopPropagation();
 		setTooltipVisible(!tooltipVisible);
-	};
-
-	const handleClickOutside = (e: MouseEvent) => {
-		if (infoIconRef.current && !infoIconRef.current.contains(e.target as Node)) {
-			setTooltipVisible(false);
-		}
 	};
 
 	const filteredAndSortedData = useMemo(() => {
@@ -51,37 +40,18 @@ const Recommend = ({ detailData }: RecommendProps) => {
 		return sortedData;
 	}, [apiData, sortCriteria]);
 
-	useEffect(() => {
-		if (tooltipVisible) document.addEventListener("click", handleClickOutside);
-		else document.removeEventListener("click", handleClickOutside);
-
-		return () => {
-			document.removeEventListener("click", handleClickOutside);
-		};
-	}, [tooltipVisible]);
-
 	return (
 		<Container>
 			<RecommendTitle dangerouslySetInnerHTML={{ __html: RECOMMEND_TITLE }} />
 			<CountdownTimer />
-			<SortOptions>
-				<div>
-					<OptionBtn selected={sortCriteria === "engagement"} onClick={() => handleSortClick("engagement")}>
-						참여도
-					</OptionBtn>
-					<OptionBtn selected={sortCriteria === "views"} onClick={() => handleSortClick("views")}>
-						조회수
-					</OptionBtn>
-				</div>
-				<TooltipSection ref={infoIconRef}>
-					<InfoIcon onClick={handleClickIcon} />
-					{tooltipVisible && (
-						<Tooltip $tooltipVisible={tooltipVisible}>
-							<span>{sortCriteria === "engagement" ? TOOLTIP_OPTION1 : TOOLTIP_OPTION2}</span>
-						</Tooltip>
-					)}
-				</TooltipSection>
-			</SortOptions>
+			<SortOptions
+				sortCriteria={sortCriteria}
+				tooltipVisible={tooltipVisible}
+				setTooltipVisible={setTooltipVisible}
+				handleSortClick={handleSortClick}
+				handleClickIcon={handleClickIcon}
+				variant="border"
+			/>
 			{filteredAndSortedData.map((item, index) => {
 				const topicIcon = YOUTUBE_TOPICS.find((topic) => topic.topic === item.section)?.icon;
 				return <RecommendCard key={index} icon={topicIcon} {...item} />;
@@ -109,58 +79,4 @@ const RecommendTitle = styled.span`
 		font-weight: 600;
 		color: rgba(48, 213, 200, 1);
 	}
-`;
-
-const SortOptions = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-top: 32px;
-	margin-bottom: 16px;
-
-	div {
-		display: flex;
-		gap: 4px;
-	}
-`;
-
-const TooltipSection = styled.div`
-	position: relative;
-	cursor: pointer;
-`;
-
-const Tooltip = styled.div<{ $tooltipVisible: boolean }>`
-	position: absolute;
-	right: 0;
-	top: 20px;
-	background-color: #555555;
-	color: #fff;
-	z-index: 1000;
-	display: ${(props) => (props.$tooltipVisible ? "block" : "none")};
-
-	width: 180px;
-	padding: 12px 13px;
-	border-radius: 12px;
-
-	span {
-		font-size: 12px;
-		font-weight: 500;
-		line-height: 140%;
-	}
-`;
-
-const OptionBtn = styled.button<{ selected: boolean }>`
-	width: 54px;
-	height: 28px;
-	border-radius: 4px;
-	background-color: #ffffff;
-
-	font-family: var(--font-Pretendard);
-	font-size: 12px;
-	font-weight: 500;
-	line-height: 14.52px;
-
-	/* background-color: ${(props) => (props.selected ? "#FFFFFF" : "transparent")}; */
-	color: ${(props) => (props.selected ? "rgba(0, 0, 0, 0.9059)" : "rgba(126, 126, 126, 1)")};
-	border: ${(props) => (props.selected ? "1px solid rgba(0, 0, 0, 1)" : "none")};
 `;

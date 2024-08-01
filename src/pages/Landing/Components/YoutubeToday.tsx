@@ -3,15 +3,12 @@ import styled from "styled-components";
 import TopicCard from "./TopicCard";
 import { DataProps } from "@/types/dataProps";
 import TodayIcon from "@/assets/today.svg?react";
-import InfoIcon from "@/assets/info.svg?react";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
 import GoToTopBtn from "./GoToTopBtn";
 import CountdownTimer from "@/components/CountdownTimer";
+import SortOptions from "@/components/SortOptions";
 
 const TODAY_TITLE = "유투브 투데이";
-const TOOLTIP_OPTION1 =
-	"조회수 대비 참여도(좋아요, 댓글 수 등)가 높은 순으로 오늘 업로드된 최대 3개의 영상이 각 주제 별로 노출됩니다.";
-const TOOLTIP_OPTION2 = "조회수가 높은 순으로 오늘 업로드된 최대 3개의 영상이 각 주제 별로 노출됩니다.";
 
 interface YoutubeTodayProps {
 	data: DataProps[];
@@ -110,24 +107,16 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 					);
 				})}
 			</TopicNav>
-			<SortOptions $isFixed={isFixed} ref={sortOptionsRef}>
-				<div>
-					<OptionBtn selected={sortCriteria === "engagement"} onClick={() => handleSortClick("engagement")}>
-						참여도
-					</OptionBtn>
-					<OptionBtn selected={sortCriteria === "views"} onClick={() => handleSortClick("views")}>
-						조회수
-					</OptionBtn>
-				</div>
-				<TooltipSection ref={infoIconRef}>
-					<InfoIcon onClick={handleClickIcon} />
-					{tooltipVisible && (
-						<Tooltip $tooltipVisible={tooltipVisible}>
-							<span>{sortCriteria === "engagement" ? TOOLTIP_OPTION1 : TOOLTIP_OPTION2}</span>
-						</Tooltip>
-					)}
-				</TooltipSection>
-			</SortOptions>
+			<SortOptions
+				ref={sortOptionsRef}
+				isFixed={isFixed}
+				sortCriteria={sortCriteria}
+				tooltipVisible={tooltipVisible}
+				setTooltipVisible={setTooltipVisible}
+				handleSortClick={handleSortClick}
+				handleClickIcon={handleClickIcon}
+				variant="default"
+			/>
 			{filteredAndSortedData.map((item, index) => {
 				const topicIcon = YOUTUBE_TOPICS.find((topic) => topic.topic === item.section)?.icon;
 				return <TopicCard key={index} icon={topicIcon} {...item} />;
@@ -213,53 +202,53 @@ const IconBox = styled.div<{ selected: boolean }>`
 	/* color: ${(props) => (props.selected ? "#ffffff" : "#333333")}; */
 `;
 
-const SortOptions = styled.div<{ $isFixed: boolean }>`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 16px;
-	margin-top: ${(props) => (props.$isFixed ? "130px" : "0px")};
+// const SortOptions = styled.div<{ $isFixed: boolean }>`
+// 	display: flex;
+// 	justify-content: space-between;
+// 	align-items: center;
+// 	margin-bottom: 16px;
+// 	margin-top: ${(props) => (props.$isFixed ? "130px" : "0px")};
 
-	div {
-		display: flex;
-		gap: 4px;
-	}
-`;
+// 	div {
+// 		display: flex;
+// 		gap: 4px;
+// 	}
+// `;
 
-const TooltipSection = styled.div`
-	position: relative;
-	cursor: pointer;
-`;
+// const TooltipSection = styled.div`
+// 	position: relative;
+// 	cursor: pointer;
+// `;
 
-const Tooltip = styled.div<{ $tooltipVisible: boolean }>`
-	position: absolute;
-	right: 0;
-	top: 20px;
-	background-color: #555555;
-	color: #fff;
-	z-index: 1000;
-	display: ${(props) => (props.$tooltipVisible ? "block" : "none")};
+// const Tooltip = styled.div<{ $tooltipVisible: boolean }>`
+// 	position: absolute;
+// 	right: 0;
+// 	top: 20px;
+// 	background-color: #555555;
+// 	color: #fff;
+// 	z-index: 1000;
+// 	display: ${(props) => (props.$tooltipVisible ? "block" : "none")};
 
-	width: 135px;
-	padding: 8px 13px;
-	border-radius: 12px;
+// 	width: 135px;
+// 	padding: 8px 13px;
+// 	border-radius: 12px;
 
-	span {
-		font-size: 8px;
-		font-weight: 500;
-		line-height: 9.68px;
-	}
-`;
+// 	span {
+// 		font-size: 8px;
+// 		font-weight: 500;
+// 		line-height: 9.68px;
+// 	}
+// `;
 
-const OptionBtn = styled.button<{ selected: boolean }>`
-	width: 54px;
-	height: 28px;
-	border-radius: 4px;
-	background-color: ${(props) => (props.selected ? "#FFFFFF" : "transparent")};
+// const OptionBtn = styled.button<{ selected: boolean }>`
+// 	width: 54px;
+// 	height: 28px;
+// 	border-radius: 4px;
+// 	background-color: ${(props) => (props.selected ? "#FFFFFF" : "transparent")};
 
-	font-family: var(--font-Pretendard);
-	font-size: 12px;
-	font-weight: 500;
-	line-height: 14.52px;
-	color: ${(props) => (props.selected ? "#000000E7" : "#7E7E7E")};
-`;
+// 	font-family: var(--font-Pretendard);
+// 	font-size: 12px;
+// 	font-weight: 500;
+// 	line-height: 14.52px;
+// 	color: ${(props) => (props.selected ? "#000000E7" : "#7E7E7E")};
+// `;
