@@ -39,14 +39,16 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 
 	return (
 		<Container $isDetailPage={isDetailPage}>
-			{isDetailPage && <BackIcon onClick={goBack} />}
-			{title === "" ? (
-				<span onClick={goHome} className="logo">
-					로고
-				</span>
-			) : (
-				<Title>{title}</Title>
-			)}
+			<div>
+				{isDetailPage && <BackIcon onClick={goBack} />}
+				{title === "" ? (
+					<span onClick={goHome} className="logo">
+						로고
+					</span>
+				) : (
+					<Title>{title}</Title>
+				)}
+			</div>
 			{user.picture !== "" && (
 				<ProfileImage onClick={logOut}>
 					{user.picture !== "" && <img src={user.picture} alt="User profile" />}
@@ -71,6 +73,11 @@ const Container = styled.header<{ $isDetailPage: boolean }>`
 	align-items: center;
 	gap: 20px;
 	z-index: 1000;
+
+	div {
+		display: flex;
+		gap: 20px;
+	}
 
 	.logo {
 		color: ${(props) => (props.$isDetailPage ? "rgba(0, 0, 0, 1)" : "rgba(255, 255, 255, 1)")};

@@ -3,7 +3,7 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import { styled } from "styled-components";
 import axios from "axios";
 import ServiceIntroduce from "./Components/ServiceIntroduce";
-import LogoHeader from "./Components/LogoHeader";
+import LogoHeader from "@/components/LogoHeader";
 import YoutubeToday from "./Components/YoutubeToday";
 import Footer from "./Components/Footer";
 import { dataState } from "@/store/data";

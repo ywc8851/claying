@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import LogoHeader from "./../Landing/Components/LogoHeader";
+import LogoHeader from "@/components/LogoHeader";
 import YouTube, { YouTubeProps } from "react-youtube";
 import { useRecoilValue } from "recoil";
 import { detailDataState } from "@/store/detailData";
