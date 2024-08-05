@@ -3,8 +3,7 @@ import { TOPIC_TAGS } from "@/constants/topic";
 import InfoIcon from "@/assets/subInfo.svg?react";
 import GoogleLogin from "@/components/GoogleLogin";
 
-const DIMMED_TITLE =
-	"지금 바로 무료 구독하고 <br/> 19개의 주요 분야의 영상을 <br/> <span class='highlight'>매일 읽어보세요.</span>";
+const DIMMED_TITLE = `지금 바로 무료 구독하고 <br/> ${TOPIC_TAGS.length}개의 주요 분야의 영상을 <br/> <span class='highlight'>매일 읽어보세요.</span>`;
 
 const DimmedArea = () => {
 	return (

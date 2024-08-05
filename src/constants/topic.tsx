@@ -101,4 +101,11 @@ export const YOUTUBE_TOPICS = [
 	},
 ];
 
-export const TOPIC_TAGS = YOUTUBE_TOPICS.filter(({ topic }) => topic !== "전체").map(({ topic }) => topic);
+export const TOPIC_TAGS = YOUTUBE_TOPICS.filter(({ topic }) => topic !== "전체")
+	.map(({ topic }) => {
+		if (topic === "남자 패션" || topic === "여자 패션") {
+			return "패션";
+		}
+		return topic;
+	})
+	.filter((topic, index, self) => self.indexOf(topic) === index);
