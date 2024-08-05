@@ -30,4 +30,8 @@ const Container = styled.button<{ isVisible: boolean }>`
 	border-radius: 50%;
 	border: none;
 	z-index: 10000;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;

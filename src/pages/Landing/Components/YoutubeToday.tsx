@@ -4,7 +4,7 @@ import TopicCard from "./TopicCard";
 import { DataProps } from "@/types/dataProps";
 import TodayIcon from "@/assets/today.svg?react";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
-import GoToTopBtn from "./GoToTopBtn";
+import GoToTopBtn from "@/components/GoToTopBtn";
 import CountdownTimer from "@/components/CountdownTimer";
 import SortOptions from "@/components/SortOptions";
 
