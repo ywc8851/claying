@@ -29,17 +29,19 @@ const Contents = ({ detailData, handleTocItemClick }: ContentsProps) => {
 	return (
 		<>
 			<ContentWrapper hasDimmedItem={hasDimmedItem}>
-				{detailData.template_summary.map(({ title, start_time, detail_contents }, index) => (
-					<TocItem
-						key={index}
-						ref={index === detailData.template_summary.length - 1 ? tocItemsRef : null}
-						title={title}
-						start={Math.floor(Number(start_time))}
-						summary={detail_contents}
-						dimmed={index >= 3 && user.name === ""}
-						onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
-					/>
-				))}
+				{detailData.template_summary
+					.slice(0, user.name === "" ? 4 : detailData.template_summary.length)
+					.map(({ title, start_time, detail_contents }, index) => (
+						<TocItem
+							key={index}
+							ref={index === (user.name === "" ? 3 : detailData.template_summary.length - 1) ? tocItemsRef : null}
+							title={title}
+							start={Math.floor(Number(start_time))}
+							summary={detail_contents}
+							dimmed={index >= 3 && user.name === ""}
+							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
+						/>
+					))}
 			</ContentWrapper>
 			<RecommendWrapper hasDimmedItem={hasDimmedItem} tocItemHeight={tocItemHeight}>
 				<Recommend detailData={detailData} />
@@ -58,5 +60,5 @@ const ContentWrapper = styled.div<{ hasDimmedItem: boolean }>`
 `;
 
 const RecommendWrapper = styled.div<{ hasDimmedItem: boolean; tocItemHeight: number }>`
-	margin-top: ${(props) => (props.hasDimmedItem ? `${531 - props.tocItemHeight + 10}px` : "60px")};
+	margin-top: ${(props) => (props.hasDimmedItem ? `${523 - props.tocItemHeight}px` : "60px")};
 `;
