@@ -107,7 +107,7 @@ const Tooltip = styled.div<{ $tooltipVisible: boolean }>`
 `;
 
 const OptionBtn = styled.button<{ selected: boolean; variant: "default" | "border" }>`
-	width: 54px;
+	width: 72px;
 	height: 28px;
 	border-radius: 4px;
 	background-color: ${(props) => (props.selected ? "#FFFFFF" : "transparent")};
