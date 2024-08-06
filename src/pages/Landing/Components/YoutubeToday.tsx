@@ -7,6 +7,8 @@ import { YOUTUBE_TOPICS } from "@/constants/topic";
 import GoToTopBtn from "@/components/GoToTopBtn";
 import CountdownTimer from "@/components/CountdownTimer";
 import SortOptions from "@/components/SortOptions";
+import { topicState } from "@/store/topic";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const TODAY_TITLE = "유투브 투데이";
 
@@ -15,12 +17,12 @@ interface YoutubeTodayProps {
 }
 
 const YoutubeToday = ({ data }: YoutubeTodayProps) => {
-	const [selectedTopic, setSelectedTopic] = useState<string>("전체");
+	const selectedTopic = useRecoilValue(topicState);
+	const setSelectedTopic = useSetRecoilState(topicState);
 	const [sortCriteria, setSortCriteria] = useState("engagement");
 	const [tooltipVisible, setTooltipVisible] = useState(false);
 	const [isFixed, setIsFixed] = useState(false);
 	const scrollRef = useRef<HTMLDivElement>(null);
-	const infoIconRef = useRef<HTMLDivElement>(null);
 	const sortOptionsRef = useRef<HTMLDivElement>(null);
 
 	const handleTopicClick = (topic: string) => {
@@ -39,11 +41,6 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 	const handleClickIcon = (e: React.MouseEvent) => {
 		e.stopPropagation();
 		setTooltipVisible(!tooltipVisible);
-	};
-	const handleClickOutside = (e: MouseEvent) => {
-		if (infoIconRef.current && !infoIconRef.current.contains(e.target as Node)) {
-			setTooltipVisible(false);
-		}
 	};
 
 	const filteredAndSortedData = useMemo(() => {
@@ -74,15 +71,6 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 			window.removeEventListener("scroll", handleScroll);
 		};
 	}, []);
-
-	useEffect(() => {
-		if (tooltipVisible) document.addEventListener("click", handleClickOutside);
-		else document.removeEventListener("click", handleClickOutside);
-
-		return () => {
-			document.removeEventListener("click", handleClickOutside);
-		};
-	}, [tooltipVisible]);
 
 	return (
 		<Container>
