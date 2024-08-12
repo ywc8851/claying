@@ -10,7 +10,7 @@ import SortOptions from "@/components/SortOptions";
 import { topicState } from "@/store/topic";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
-const TODAY_TITLE = "유투브 투데이";
+const TODAY_TITLE = "오늘의 유튜브 아티클";
 
 interface YoutubeTodayProps {
 	data: DataProps[];
