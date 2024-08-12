@@ -1,27 +1,31 @@
 export interface DataProps {
 	id: string;
 	section: string;
-	title: string;
-	upload_date: string;
-	duration: string;
-	tags: string;
-	thumbnail: string;
-	channel_id: string;
-	channel_thumbnail: string;
-	channel_name: string;
-	channel_subscribers: number;
-	detail_category: string;
 	template_summary: TemplateSummary[];
 	headline_title: string;
 	headline_subtitle: string;
 	short_summary: string;
-	engagement_score: number;
+	title: string;
+	upload_date: string;
+	duration: string;
+	thumbnail: string;
+	channel_id: string;
+	detail_category: string;
 	views: number;
+	likes: number;
+	comments: number;
+	engagement_score: number;
+	composite_score: number;
+	channel_name: string;
+	channel_thumbnail: string;
+	channel_subscribers: number;
+	channel_video_count: number;
+	channel_view_count: number;
+	channel_banner: string;
 }
 
 interface TemplateSummary {
 	title: string;
 	detail_contents: string;
 	start_time: string;
-	end_time: string;
 }
