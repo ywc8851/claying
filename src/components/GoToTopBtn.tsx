@@ -34,4 +34,9 @@ const Container = styled.button<{ isVisible: boolean }>`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	svg {
+		width: 24px !important;
+		height: 24px !important;
+	}
 `;
