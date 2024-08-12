@@ -11,13 +11,11 @@ interface RecommendCardProps extends DataProps {
 const RecommendCard = (props: RecommendCardProps) => {
 	const navigate = useNavigate();
 	const setTopicState = useSetRecoilState(detailDataState);
-	const { headline_title, headline_subtitle, thumbnail, upload_date } = props;
+	const { id, headline_title, headline_subtitle, thumbnail, upload_date } = props;
 
 	const handleNavigate = () => {
 		setTopicState(props);
-		window.scrollTo(0, 0);
-		navigate("/detail", { replace: true });
-		window.location.reload();
+		navigate(`/detail/${id}`);
 	};
 
 	return (

@@ -9,28 +9,32 @@ interface TocItemProps {
 	title: string;
 	start: number;
 	summary: string;
+	thumbnails: string;
 	dimmed?: boolean;
 	onClick: () => void;
 }
 
-const TocItem = forwardRef<HTMLDivElement, TocItemProps>(({ title, start, summary, dimmed, onClick }, ref) => {
-	return (
-		<Container ref={ref}>
-			<ContentWrapper dimmed={dimmed}>
-				<Title>{title}</Title>
-				<Thumbnail>
-					<PlayIcon onClick={onClick} />
-				</Thumbnail>
-				<Timeline>
-					<PlayIcon width={16} height={16} />
-					<span>{formatTimeRange(start)}</span>
-				</Timeline>
-				<Summary>{formatSummary(summary)}</Summary>
-			</ContentWrapper>
-			{dimmed && <DimmedArea />}
-		</Container>
-	);
-});
+const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
+	({ title, start, summary, thumbnails, dimmed, onClick }, ref) => {
+		return (
+			<Container ref={ref}>
+				<ContentWrapper $dimmed={dimmed}>
+					<Title>{title}</Title>
+					<Thumbnail onClick={onClick}>
+						<img src={thumbnails} alt={title} />
+						<PlayIcon className="play-icon" />
+					</Thumbnail>
+					<Timeline>
+						<PlayIcon width={16} height={16} />
+						<span>{formatTimeRange(start)}</span>
+					</Timeline>
+					<Summary>{formatSummary(summary)}</Summary>
+				</ContentWrapper>
+				{dimmed && <DimmedArea />}
+			</Container>
+		);
+	}
+);
 
 export default TocItem;
 
@@ -41,8 +45,8 @@ const Container = styled.div`
 	margin-top: 60px;
 `;
 
-const ContentWrapper = styled.div<{ dimmed?: boolean }>`
-	opacity: ${(props) => (props.dimmed ? 0.8 : 1)};
+const ContentWrapper = styled.div<{ $dimmed?: boolean }>`
+	opacity: ${(props) => (props.$dimmed ? 0.8 : 1)};
 `;
 
 const Title = styled.span`
@@ -52,13 +56,26 @@ const Title = styled.span`
 `;
 
 const Thumbnail = styled.div`
-	height: 155px;
-	padding: 42px 0px 41px 0px;
-	background: rgba(217, 217, 217, 1);
+	position: relative;
 	margin-top: 12px;
 	margin-bottom: 8px;
 	display: flex;
 	justify-content: center;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.play-icon {
+		position: absolute;
+		width: 40px;
+		height: 40px;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
 `;
 
 const Timeline = styled.div`

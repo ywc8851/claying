@@ -8,10 +8,11 @@ import { useEffect, useRef, useState } from "react";
 
 interface ContentsProps {
 	detailData: DataProps;
+	thumbnails: string[];
 	handleTocItemClick: (starTime: number) => void;
 }
 
-const Contents = ({ detailData, handleTocItemClick }: ContentsProps) => {
+const Contents = ({ detailData, thumbnails, handleTocItemClick }: ContentsProps) => {
 	const user = useRecoilValue(userState);
 	const [tocItemHeight, setTocItemHeight] = useState(0);
 	const tocItemsRef = useRef<HTMLDivElement | null>(null);
@@ -28,7 +29,7 @@ const Contents = ({ detailData, handleTocItemClick }: ContentsProps) => {
 
 	return (
 		<>
-			<ContentWrapper hasDimmedItem={hasDimmedItem}>
+			<ContentWrapper>
 				{detailData.template_summary
 					.slice(0, user.name === "" ? 4 : detailData.template_summary.length)
 					.map(({ title, start_time, detail_contents }, index) => (
@@ -38,12 +39,13 @@ const Contents = ({ detailData, handleTocItemClick }: ContentsProps) => {
 							title={title}
 							start={Math.floor(Number(start_time))}
 							summary={detail_contents}
+							thumbnails={thumbnails[index]}
 							dimmed={index >= 3 && user.name === ""}
 							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
 						/>
 					))}
 			</ContentWrapper>
-			<RecommendWrapper hasDimmedItem={hasDimmedItem} tocItemHeight={tocItemHeight}>
+			<RecommendWrapper $hasDimmedItem={hasDimmedItem} $tocItemHeight={tocItemHeight}>
 				<Recommend detailData={detailData} />
 			</RecommendWrapper>
 		</>
@@ -52,13 +54,13 @@ const Contents = ({ detailData, handleTocItemClick }: ContentsProps) => {
 
 export default Contents;
 
-const ContentWrapper = styled.div<{ hasDimmedItem: boolean }>`
+const ContentWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	padding: 0 20px;
 `;
 
-const RecommendWrapper = styled.div<{ hasDimmedItem: boolean; tocItemHeight: number }>`
-	margin-top: ${(props) => (props.hasDimmedItem ? `${523 - props.tocItemHeight}px` : "60px")};
+const RecommendWrapper = styled.div<{ $hasDimmedItem: boolean; $tocItemHeight: number }>`
+	margin-top: ${(props) => (props.$hasDimmedItem ? `${523 - props.$tocItemHeight}px` : "60px")};
 `;

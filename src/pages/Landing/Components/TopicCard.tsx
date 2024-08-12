@@ -23,11 +23,12 @@ const TopicCard = (props: TopicCardProps) => {
 		channel_name,
 		channel_subscribers,
 		icon,
+		id,
 	} = props;
 
 	const handleNavigate = () => {
 		setTopicState(props);
-		navigate("/detail");
+		navigate(`/detail/${id}`);
 	};
 
 	return (

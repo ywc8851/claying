@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import LogoHeader from "@/components/LogoHeader";
+import { useParams } from "react-router-dom";
 import YouTube, { YouTubeProps } from "react-youtube";
-import { useRecoilValue } from "recoil";
-import { detailDataState } from "@/store/detailData";
-import { DataProps } from "@/types/dataProps";
+import LogoHeader from "@/components/LogoHeader";
 import Contents from "./Components/Contents";
+import { DataProps } from "@/types/dataProps";
 import { formatSummary } from "@/utils/formatter";
+import { base64ToBlobUrl } from "@/utils/base64";
 
 const index = () => {
-	const detailData = useRecoilValue<DataProps>(detailDataState);
+	const { id } = useParams();
+	const [detailData, setDetailData] = useState<DataProps | null>(null);
+	const [thumbnails, setThumbnails] = useState<string[]>([]);
 	const [videoPlayer, setVideoPlayer] = useState<any>(null);
 	const [isFixed, setIsFixed] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -61,43 +63,82 @@ const index = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		const fetchThumbnails = async () => {
+			try {
+				const response = await fetch(`https://claying.shop/briefing/capture_frames/${id}`);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				const data: { filename: string; content: string }[] = await response.json();
+
+				if (Array.isArray(data) && data.length > 0) {
+					const urls = data.map(({ content }) => base64ToBlobUrl(content));
+					setThumbnails(urls);
+				}
+			} catch (error) {
+				console.error("Error fetching thumbnails:", error);
+			}
+		};
+
+		const fetchData = async () => {
+			try {
+				const response = await fetch(`https://claying.shop/briefing/top_videos/${id}`);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				const data = await response.json();
+				setDetailData(data[0]);
+			} catch (error) {
+				console.error("Error fetching the data:", error);
+			}
+		};
+
+		fetchData();
+		fetchThumbnails();
+	}, [id]);
+
 	return (
 		<Container $isFixed={isFixed}>
-			<LogoHeader title={isFixed ? `${detailData.headline_title}, ${detailData.headline_subtitle}` : ""} />
-			<PageInfo ref={scrollRef}>
-				<Category>{detailData.section}</Category>
-				<Title>
-					{detailData.headline_title},
-					<br />
-					{detailData.headline_subtitle}
-				</Title>
-				<Upload>{detailData.upload_date} 업로드</Upload>
-			</PageInfo>
-			<VideoContainer ref={videoContainerRef} $isFixed={isFixed}>
-				{isLoading && <Loader />}
-				<YouTube
-					videoId={detailData.id}
-					opts={opts}
-					onReady={onPlayerReady}
-					onStateChange={onPlayerStateChange}
-					style={{ display: isLoading ? "none" : "block" }}
-				/>
-			</VideoContainer>
-			<Preview $isFixed={isFixed}>
-				<div>
-					<span>🔎 미리보기</span>
-					{formatSummary(detailData.short_summary)}
-				</div>
-			</Preview>
-			<TOC>
-				<div>목차</div>
-				<div>
-					{detailData.template_summary.map(({ title }, index) => {
-						return <span key={index}>{title} </span>;
-					})}
-				</div>
-			</TOC>
-			<Contents detailData={detailData} handleTocItemClick={handleTocItemClick} />
+			{detailData && (
+				<>
+					<LogoHeader title={isFixed ? `${detailData.headline_title}, ${detailData.headline_subtitle}` : ""} />
+					<PageInfo ref={scrollRef}>
+						<Category>{detailData.section}</Category>
+						<Title>
+							{detailData.headline_title},
+							<br />
+							{detailData.headline_subtitle}
+						</Title>
+						<Upload>{detailData.upload_date} 업로드</Upload>
+					</PageInfo>
+					<VideoContainer ref={videoContainerRef} $isFixed={isFixed}>
+						{isLoading && <Loader />}
+						<YouTube
+							videoId={id}
+							opts={opts}
+							onReady={onPlayerReady}
+							onStateChange={onPlayerStateChange}
+							style={{ display: isLoading ? "none" : "block" }}
+						/>
+					</VideoContainer>
+					<Preview $isFixed={isFixed}>
+						<div>
+							<span>🔎 미리보기</span>
+							{formatSummary(detailData.short_summary)}
+						</div>
+					</Preview>
+					<TOC>
+						<div>목차</div>
+						<div>
+							{detailData.template_summary.map(({ title }, index) => {
+								return <span key={index}>{title} </span>;
+							})}
+						</div>
+					</TOC>
+					<Contents detailData={detailData} thumbnails={thumbnails} handleTocItemClick={handleTocItemClick} />
+				</>
+			)}
 		</Container>
 	);
 };
@@ -161,10 +202,6 @@ const Preview = styled.div<{ $isFixed: boolean }>`
 	span:first-child {
 		font-weight: 600;
 	}
-	/* span:last-child {
-		font-weight: 400;
-		line-height: 26.88px;
-	} */
 
 	span.line-break {
 		font-weight: 400;
