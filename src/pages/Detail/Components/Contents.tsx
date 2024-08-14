@@ -25,7 +25,7 @@ const Contents = ({ detailData, thumbnails, handleTocItemClick }: ContentsProps)
 		};
 
 		calculateHeight();
-	}, [detailData.template_summary]);
+	}, [tocItemsRef, detailData, thumbnails]);
 
 	return (
 		<>
@@ -41,6 +41,7 @@ const Contents = ({ detailData, thumbnails, handleTocItemClick }: ContentsProps)
 							summary={detail_contents}
 							thumbnails={thumbnails[index]}
 							dimmed={index >= 3 && user.name === ""}
+							tocItemHeight={tocItemHeight}
 							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
 						/>
 					))}
@@ -62,5 +63,5 @@ const ContentWrapper = styled.div`
 `;
 
 const RecommendWrapper = styled.div<{ $hasDimmedItem: boolean; $tocItemHeight: number }>`
-	margin-top: ${(props) => (props.$hasDimmedItem ? `${523 - props.$tocItemHeight}px` : "60px")};
+	margin-top: ${(props) => (props.$hasDimmedItem ? `0px` : "60px")};
 `;

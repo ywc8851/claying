@@ -10,12 +10,13 @@ interface TocItemProps {
 	start: number;
 	summary: string;
 	thumbnails: string;
+	tocItemHeight: number;
 	dimmed?: boolean;
 	onClick: () => void;
 }
 
 const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
-	({ title, start, summary, thumbnails, dimmed, onClick }, ref) => {
+	({ title, start, summary, thumbnails, dimmed, tocItemHeight, onClick }, ref) => {
 		return (
 			<Container ref={ref}>
 				<ContentWrapper $dimmed={dimmed}>
@@ -30,7 +31,7 @@ const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
 					</Timeline>
 					<Summary>{formatSummary(summary)}</Summary>
 				</ContentWrapper>
-				{dimmed && <DimmedArea />}
+				{dimmed && <DimmedArea tocItemHeight={tocItemHeight} />}
 			</Container>
 		);
 	}

@@ -5,9 +5,13 @@ import GoogleLogin from "@/components/GoogleLogin";
 
 const DIMMED_TITLE = `지금 바로 무료 구독하고 <br/> ${TOPIC_TAGS.length}개의 주요 분야의 영상을 <br/> <span class='highlight'>매일 읽어보세요.</span>`;
 
-const DimmedArea = () => {
+interface DimmedAreaProps {
+	tocItemHeight: number;
+}
+
+const DimmedArea = ({ tocItemHeight }: DimmedAreaProps) => {
 	return (
-		<Container>
+		<Container $height={tocItemHeight}>
 			<ServiceTitle dangerouslySetInnerHTML={{ __html: DIMMED_TITLE }} />
 			<TopicTags>
 				{TOPIC_TAGS.map((topic) => {
@@ -27,11 +31,12 @@ const DimmedArea = () => {
 
 export default DimmedArea;
 
-const Container = styled.div`
+const Container = styled.div<{ $height: number }>`
+	height: ${({ $height }) => $height}px;
 	position: absolute;
 	top: -4px;
-	padding-top: 72px;
-	padding-bottom: 60px;
+	padding-top: ${({ $height }) => ($height - 432) / 2}px;
+	padding-bottom: ${({ $height }) => ($height - 432) / 2}px;
 	background-color: rgba(255, 255, 255, 0.9);
 
 	display: flex;
