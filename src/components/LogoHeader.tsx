@@ -80,17 +80,17 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 					) : (
 						<Title>{title}</Title>
 					)}
-					{isDetailPage && title !== "" && (
-						<IconSection>
-							{player ? (
-								<YoutubeOffIcon onClick={togglePlayerVisible} />
-							) : (
-								<YoutubeOnIcon onClick={togglePlayerVisible} />
-							)}
-							<ShareIcon onClick={copyUrlToClipboard} />
-						</IconSection>
-					)}
 				</div>
+				{isDetailPage && title !== "" && (
+					<IconSection>
+						{player ? (
+							<YoutubeOffIcon onClick={togglePlayerVisible} />
+						) : (
+							<YoutubeOnIcon onClick={togglePlayerVisible} />
+						)}
+						<ShareIcon onClick={copyUrlToClipboard} />
+					</IconSection>
+				)}
 				{title === "" && user.picture !== "" && (
 					<ProfileImage onClick={logOut}>
 						{user.picture !== "" && <img src={user.picture} alt="User profile" />}
@@ -113,18 +113,18 @@ const Container = styled.header<{ $isDetailPage: boolean }>`
 	font-family: "Pretendard Variable";
 
 	display: flex;
-	justify-content: space-between;
+	justify-content: ${(props) => (props.$isDetailPage ? "space-between" : "space-between")};
 	align-items: center;
-	gap: 20px;
 	z-index: 1000;
 
 	div {
 		display: flex;
 		align-items: center;
-		gap: 20px;
+		gap: 8px;
 	}
 
 	.logo {
+		margin-left: 8px;
 		color: ${(props) => (props.$isDetailPage ? "rgba(0, 0, 0, 1)" : "rgba(255, 255, 255, 1)")};
 	}
 `;
@@ -133,7 +133,7 @@ const Title = styled.span`
 	font-size: 16px;
 	font-weight: 400;
 	line-height: 19.09px;
-
+	width: 90%;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
