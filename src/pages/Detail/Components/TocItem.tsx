@@ -62,8 +62,14 @@ const Thumbnail = styled.div`
 	margin-bottom: 8px;
 	display: flex;
 	justify-content: center;
+	width: 100%;
+	padding-bottom: 56.25%;
+	background-color: #f0f0f0;
 
 	img {
+		position: absolute;
+		top: 0;
+		left: 0;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
