@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { useRecoilValue } from "recoil";
 import { useParams } from "react-router-dom";
 import YouTube, { YouTubeProps } from "react-youtube";
+import { Helmet } from "react-helmet";
 import LogoHeader from "@/components/LogoHeader";
 import Contents from "./Components/Contents";
 import { DataProps } from "@/types/dataProps";
@@ -103,6 +104,14 @@ const index = () => {
 
 	return (
 		<Container $isFixed={isFixed}>
+			{detailData && (
+				<Helmet>
+					<title>{detailData.title}</title>
+					<meta property="og:title" content={detailData.title} />
+					<meta property="og:description" content={detailData.short_summary} />
+					<meta property="og:image" content={detailData.thumbnail} />
+				</Helmet>
+			)}
 			{detailData && (
 				<>
 					<LogoHeader title={isFixed ? `${detailData.headline_title}, ${detailData.headline_subtitle}` : ""} />
