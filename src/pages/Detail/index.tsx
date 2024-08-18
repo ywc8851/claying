@@ -10,6 +10,7 @@ import { DataProps } from "@/types/dataProps";
 import { formatSummary } from "@/utils/formatter";
 import { base64ToBlobUrl } from "@/utils/base64";
 import { playerState } from "@/store/player";
+import NotFoundPage from "./NotFound";
 
 const index = () => {
 	const { id } = useParams();
@@ -18,6 +19,7 @@ const index = () => {
 	const [videoPlayer, setVideoPlayer] = useState<any>(null);
 	const [isFixed, setIsFixed] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+	const [is404, setIs404] = useState(false);
 	const isPlayerVisible = useRecoilValue(playerState);
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -94,6 +96,7 @@ const index = () => {
 				const data = await response.json();
 				setDetailData(data[0]);
 			} catch (error) {
+				setIs404(true);
 				console.error("Error fetching the data:", error);
 			}
 		};
@@ -101,6 +104,10 @@ const index = () => {
 		fetchData();
 		fetchThumbnails();
 	}, [id]);
+
+	if (is404) {
+		return <NotFoundPage />;
+	}
 
 	return (
 		<Container $isFixed={isFixed}>
