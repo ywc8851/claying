@@ -7,12 +7,16 @@ import { resolve } from "path";
 export default () => {
 	return defineConfig({
 		plugins: [svgr(), react(), tsconfigPaths()],
-		base: "./",
+		base: "/",
 		resolve: {
 			alias: [
 				{ find: "@", replacement: resolve(__dirname, "src") },
 				{ find: "src", replacement: resolve(__dirname, "src/") },
 			],
+		},
+		build: {
+			outDir: "dist",
+			assetsDir: "assets",
 		},
 		server: {
 			proxy: {
