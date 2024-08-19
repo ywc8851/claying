@@ -71,7 +71,7 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 	return (
 		<>
 			<Container $isDetailPage={isDetailPage}>
-				<div>
+				<PageInfo>
 					{isDetailPage && <BackIcon onClick={goBack} />}
 					{title === "" ? (
 						<span onClick={goHome} className="logo">
@@ -80,7 +80,7 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 					) : (
 						<Title>{title}</Title>
 					)}
-				</div>
+				</PageInfo>
 				{isDetailPage && title !== "" && (
 					<IconSection>
 						{player ? (
@@ -106,7 +106,7 @@ export default LogoHeader;
 const Container = styled.header<{ $isDetailPage: boolean }>`
 	width: 100%;
 	height: 52px;
-	padding: 0 20px;
+	padding: 0 20px !important;
 	position: fixed;
 	top: 0;
 	background-color: ${(props) => (props.$isDetailPage ? "rgba(244, 244, 244, 1)" : "rgba(0, 123, 255, 1)")};
@@ -116,12 +116,7 @@ const Container = styled.header<{ $isDetailPage: boolean }>`
 	justify-content: ${(props) => (props.$isDetailPage ? "space-between" : "space-between")};
 	align-items: center;
 	z-index: 1000;
-
-	div {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-	}
+	overflow: hidden;
 
 	.logo {
 		margin-left: 8px;
@@ -129,11 +124,19 @@ const Container = styled.header<{ $isDetailPage: boolean }>`
 	}
 `;
 
+const PageInfo = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-grow: 1;
+`;
+
 const Title = styled.span`
 	font-size: 16px;
 	font-weight: 400;
 	line-height: 19.09px;
-	width: 90%;
+	width: 200px;
+	flex-grow: 1;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
