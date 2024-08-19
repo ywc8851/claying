@@ -39,16 +39,28 @@ export const formatTimeRange = (startMinutes: number): string => {
 	return `${startTime} ~`;
 };
 
-// 소수점을 포함한 숫자를 예외 처리하는 정규 표현식
 export const formatSummary = (summary: string) => {
 	const regex = /(?<!\d\.\d)\. /g;
+
 	return summary
 		.split(regex)
 		.filter((sentence) => sentence.trim() !== "")
-		.map((sentence, index, array) => (
-			<span key={index} className="line-break">
-				{sentence.trim()}
-				{index !== array.length - 1 ? "." : ""}
-			</span>
-		));
+		.map((sentence, index, array) => {
+			const parts = sentence.split(/(<mark>.*?<\/mark>)/g).map((part, i) =>
+				part.startsWith("<mark>") ? (
+					<mark key={i}>
+						<b style={{ fontWeight: "bold" }}>{part.replace(/<\/?mark>/g, "")}</b>
+					</mark>
+				) : (
+					part
+				)
+			);
+
+			return (
+				<span key={index} className="line-break">
+					{parts}
+					{index !== array.length - 1 ? "." : ""}
+				</span>
+			);
+		});
 };
