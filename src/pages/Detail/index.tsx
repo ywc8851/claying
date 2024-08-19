@@ -77,9 +77,15 @@ const index = () => {
 					throw new Error(`HTTP error! status: ${response.status}`);
 				}
 				const data: { filename: string; content: string }[] = await response.json();
+				// 목차 순 정렬
+				const sortedFiles = data.sort((a, b) => {
+					const numA = parseInt(a.filename.match(/\d+/)?.[0] || "0", 10);
+					const numB = parseInt(b.filename.match(/\d+/)?.[0] || "0", 10);
 
-				if (Array.isArray(data) && data.length > 0) {
-					const urls = data.map(({ content }) => base64ToBlobUrl(content));
+					return numA - numB;
+				});
+				if (Array.isArray(sortedFiles) && sortedFiles.length > 0) {
+					const urls = sortedFiles.map(({ content }) => base64ToBlobUrl(content));
 					setThumbnails(urls);
 				}
 			} catch (error) {
