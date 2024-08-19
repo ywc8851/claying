@@ -47,7 +47,7 @@ const Container = styled.div`
 `;
 
 const ContentWrapper = styled.div<{ $dimmed?: boolean }>`
-	opacity: ${(props) => (props.$dimmed ? 0.8 : 1)};
+	opacity: ${(props) => (props.$dimmed ? 0.2 : 1)};
 `;
 
 const Title = styled.span`
