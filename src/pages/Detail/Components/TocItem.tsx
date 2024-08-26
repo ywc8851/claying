@@ -57,7 +57,7 @@ const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
 						<TipAreaDescription>{explanation_description}</TipAreaDescription>
 					</Summary>
 				</ContentWrapper>
-				{dimmed && <DimmedArea tocItemHeight={tocItemHeight} title={title} detailData={detailData} />}
+				{dimmed && <DimmedArea tocItemHeight={tocItemHeight} detailData={detailData} />}
 			</Container>
 		);
 	}

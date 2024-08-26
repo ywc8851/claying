@@ -8,11 +8,10 @@ const DIMMED_TITLE = `지금 바로 무료 구독하고 <br/> ${TOPIC_TAGS.lengt
 
 interface DimmedAreaProps {
 	tocItemHeight: number;
-	title: string;
 	detailData: DataProps;
 }
 
-const DimmedArea = ({ tocItemHeight, title, detailData }: DimmedAreaProps) => {
+const DimmedArea = ({ tocItemHeight, detailData }: DimmedAreaProps) => {
 	console.log(detailData.template_summary);
 	return (
 		<Container $height={tocItemHeight}>
