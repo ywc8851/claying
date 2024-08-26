@@ -7,6 +7,7 @@ import { YOUTUBE_TOPICS } from "@/constants/topic";
 import GoToTopBtn from "@/components/GoToTopBtn";
 import CountdownTimer from "@/components/CountdownTimer";
 import SortOptions from "@/components/SortOptions";
+import TopicNav from "./TopicNav";
 import { topicState } from "@/store/topic";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -79,22 +80,7 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 				{TODAY_TITLE}
 			</TodayTitle>
 			<CountdownTimer scrollRef={scrollRef} />
-			<TopicNav $isFixed={isFixed}>
-				{YOUTUBE_TOPICS.map(({ topic, icon }) => {
-					return (
-						<Topic key={topic} onClick={() => handleTopicClick(topic)}>
-							<IconBox selected={selectedTopic === topic}>{icon}</IconBox>
-							{topic === "뷰티/메이크업" ? (
-								<span>
-									뷰티/ <br /> 메이크업
-								</span>
-							) : (
-								<span>{topic}</span>
-							)}
-						</Topic>
-					);
-				})}
-			</TopicNav>
+			<TopicNav $isFixed={isFixed} selectedTopic={selectedTopic} handleTopicClick={handleTopicClick}></TopicNav>
 			<SortOptions
 				ref={sortOptionsRef}
 				isFixed={isFixed}
@@ -137,54 +123,4 @@ const TodayTitle = styled.span`
 	display: flex;
 	align-items: center;
 	gap: 12px;
-`;
-
-const TopicNav = styled.div<{ $isFixed: boolean }>`
-	width: calc(100% + 20px);
-	display: flex;
-	gap: 12px;
-	padding-top: 12px;
-	margin-bottom: 5px;
-	background-color: rgba(242, 242, 242, 1);
-
-	padding-right: ${(props) => (props.$isFixed ? "50px" : "auto")};
-	position: ${(props) => (props.$isFixed ? "fixed" : "static")};
-	top: ${(props) => (props.$isFixed ? "52px" : "auto")};
-	left: ${(props) => (props.$isFixed ? "20px" : "auto")};
-	z-index: ${(props) => (props.$isFixed ? 10000 : 0)};
-
-	overflow-x: scroll;
-	::-webkit-scrollbar {
-		display: none;
-	}
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-`;
-
-const Topic = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 8px;
-
-	span {
-		font-size: 12px;
-		font-weight: 500;
-		line-height: 15px;
-
-		display: inline-block;
-		text-align: center;
-		width: 46px;
-	}
-`;
-
-const IconBox = styled.div<{ selected: boolean }>`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 44px;
-	height: 44px;
-	border-radius: 50%;
-
-	background-color: ${(props) => (props.selected ? "#30D5C8" : "#D9D9D9")};
 `;
