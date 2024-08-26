@@ -28,4 +28,6 @@ interface TemplateSummary {
 	title: string;
 	detail_contents: string;
 	start_time: string;
+	explanation_keyword: string;
+	explanation_description: string;
 }

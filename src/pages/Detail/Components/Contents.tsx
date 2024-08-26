@@ -32,7 +32,7 @@ const Contents = ({ detailData, thumbnails, handleTocItemClick }: ContentsProps)
 			<ContentWrapper>
 				{detailData.template_summary
 					.slice(0, user.name === "" ? 4 : detailData.template_summary.length)
-					.map(({ title, start_time, detail_contents }, index) => (
+					.map(({ title, start_time, detail_contents, explanation_keyword, explanation_description }, index) => (
 						<TocItem
 							key={index}
 							ref={index === (user.name === "" ? 3 : detailData.template_summary.length - 1) ? tocItemsRef : null}
@@ -40,9 +40,12 @@ const Contents = ({ detailData, thumbnails, handleTocItemClick }: ContentsProps)
 							start={Math.floor(Number(start_time))}
 							summary={detail_contents}
 							thumbnails={thumbnails[index]}
+							explanation_keyword={explanation_keyword}
+							explanation_description={explanation_description}
 							dimmed={index >= 3 && user.name === ""}
 							tocItemHeight={tocItemHeight}
 							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
+							detailData={detailData}
 						/>
 					))}
 			</ContentWrapper>
@@ -63,5 +66,5 @@ const ContentWrapper = styled.div`
 `;
 
 const RecommendWrapper = styled.div<{ $hasDimmedItem: boolean; $tocItemHeight: number }>`
-	margin-top: ${(props) => (props.$hasDimmedItem ? `0px` : "60px")};
+	margin-top: ${(props) => (props.$hasDimmedItem ? `60px` : "80px")};
 `;

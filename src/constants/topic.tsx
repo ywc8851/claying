@@ -40,6 +40,10 @@ export const YOUTUBE_TOPICS = [
 		icon: <EconomyIcon />,
 	},
 	{
+		topic: "비즈니스/사업",
+		icon: <EconomyIcon />,
+	},
+	{
 		topic: "건강",
 		icon: <HealthIcon />,
 	},

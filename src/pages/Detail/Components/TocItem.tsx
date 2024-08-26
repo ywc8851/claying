@@ -2,6 +2,7 @@ import styled from "styled-components";
 import PlayIcon from "@/assets/play.svg?react";
 import { formatTimeRange } from "@/utils/formatter";
 import DimmedArea from "./DimmedArea";
+import { DataProps } from "@/types/dataProps";
 import { forwardRef } from "react";
 import { formatSummary } from "@/utils/formatter";
 
@@ -10,17 +11,36 @@ interface TocItemProps {
 	start: number;
 	summary: string;
 	thumbnails: string;
+	explanation_keyword: string;
+	explanation_description: string;
 	tocItemHeight: number;
 	dimmed?: boolean;
 	onClick: () => void;
+	detailData: DataProps;
 }
 
 const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
-	({ title, start, summary, thumbnails, dimmed, tocItemHeight, onClick }, ref) => {
+	(
+		{
+			title,
+			start,
+			summary,
+			explanation_keyword,
+			explanation_description,
+			thumbnails,
+			dimmed,
+			tocItemHeight,
+			onClick,
+			detailData,
+		},
+		ref
+	) => {
 		return (
 			<Container ref={ref}>
-				<ContentWrapper $dimmed={dimmed}>
+				<ContentWrapperDetail $dimmed={dimmed}>
 					<Title>{title}</Title>
+				</ContentWrapperDetail>
+				<ContentWrapper $dimmed={dimmed}>
 					<Thumbnail onClick={onClick}>
 						<img src={thumbnails} alt={title} />
 						<PlayIcon className="play-icon" />
@@ -29,9 +49,15 @@ const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
 						<PlayIcon width={16} height={16} />
 						<span>{formatTimeRange(start)}</span>
 					</Timeline>
-					<Summary>{formatSummary(summary)}</Summary>
+					<Summary>
+						{formatSummary(summary)}
+						<TipArea>
+							💡 <Tip>{explanation_keyword}</Tip>
+						</TipArea>
+						<TipAreaDescription>{explanation_description}</TipAreaDescription>
+					</Summary>
 				</ContentWrapper>
-				{dimmed && <DimmedArea tocItemHeight={tocItemHeight} />}
+				{dimmed && <DimmedArea tocItemHeight={tocItemHeight} title={title} detailData={detailData} />}
 			</Container>
 		);
 	}
@@ -47,7 +73,11 @@ const Container = styled.div`
 `;
 
 const ContentWrapper = styled.div<{ $dimmed?: boolean }>`
-	opacity: ${(props) => (props.$dimmed ? 0.2 : 1)};
+	opacity: ${(props) => (props.$dimmed ? 0.02 : 1)};
+`;
+
+const ContentWrapperDetail = styled.div<{ $dimmed?: boolean }>`
+	opacity: ${(props) => (props.$dimmed ? 0.05 : 1)};
 `;
 
 const Title = styled.span`
@@ -114,4 +144,25 @@ const Summary = styled.div`
 		line-height: 168%;
 		margin-bottom: 12px;
 	}
+`;
+
+const TipArea = styled.div`
+	display: flex;
+	font-size: 16px;
+	margin-top: 36px;
+`;
+
+const Tip = styled.span`
+	font-weight: 700;
+	background-color: #30d5c8;
+	padding-left: 8px;
+	padding-right: 8px;
+	border-radius: 4px;
+	margin-left: 4px;
+`;
+
+const TipAreaDescription = styled.div`
+	font-size: 16px;
+	line-height: 152%;
+	margin-top: 8px;
 `;
