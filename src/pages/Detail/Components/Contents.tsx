@@ -66,5 +66,5 @@ const ContentWrapper = styled.div`
 `;
 
 const RecommendWrapper = styled.div<{ $hasDimmedItem: boolean; $tocItemHeight: number }>`
-	margin-top: ${(props) => (props.$hasDimmedItem ? `60px` : "80px")};
+	margin-top: ${(props) => (props.$hasDimmedItem ? `0px` : "60px")};
 `;

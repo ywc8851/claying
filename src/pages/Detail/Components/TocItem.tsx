@@ -16,31 +16,17 @@ interface TocItemProps {
 	tocItemHeight: number;
 	dimmed?: boolean;
 	onClick: () => void;
-	detailData: DataProps;
 }
 
 const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
 	(
-		{
-			title,
-			start,
-			summary,
-			explanation_keyword,
-			explanation_description,
-			thumbnails,
-			dimmed,
-			tocItemHeight,
-			onClick,
-			detailData,
-		},
+		{ title, start, summary, explanation_keyword, explanation_description, thumbnails, dimmed, tocItemHeight, onClick },
 		ref
 	) => {
 		return (
 			<Container ref={ref}>
-				<ContentWrapperDetail $dimmed={dimmed}>
-					<Title>{title}</Title>
-				</ContentWrapperDetail>
 				<ContentWrapper $dimmed={dimmed}>
+					<Title>{title}</Title>
 					<Thumbnail onClick={onClick}>
 						<img src={thumbnails} alt={title} />
 						<PlayIcon className="play-icon" />
@@ -57,7 +43,7 @@ const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
 						<TipAreaDescription>{explanation_description}</TipAreaDescription>
 					</Summary>
 				</ContentWrapper>
-				{dimmed && <DimmedArea tocItemHeight={tocItemHeight} detailData={detailData} />}
+				{dimmed && <DimmedArea tocItemHeight={tocItemHeight} />}
 			</Container>
 		);
 	}
@@ -73,11 +59,7 @@ const Container = styled.div`
 `;
 
 const ContentWrapper = styled.div<{ $dimmed?: boolean }>`
-	opacity: ${(props) => (props.$dimmed ? 0.02 : 1)};
-`;
-
-const ContentWrapperDetail = styled.div<{ $dimmed?: boolean }>`
-	opacity: ${(props) => (props.$dimmed ? 0.05 : 1)};
+	opacity: ${(props) => (props.$dimmed ? 0.2 : 1)};
 `;
 
 const Title = styled.span`

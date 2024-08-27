@@ -8,11 +8,9 @@ const DIMMED_TITLE = `지금 바로 무료 구독하고 <br/> ${TOPIC_TAGS.lengt
 
 interface DimmedAreaProps {
 	tocItemHeight: number;
-	detailData: DataProps;
 }
 
-const DimmedArea = ({ tocItemHeight, detailData }: DimmedAreaProps) => {
-	console.log(detailData.template_summary);
+const DimmedArea = ({ tocItemHeight }: DimmedAreaProps) => {
 	return (
 		<Container $height={tocItemHeight}>
 			<ServiceTitle dangerouslySetInnerHTML={{ __html: DIMMED_TITLE }} />
@@ -27,8 +25,6 @@ const DimmedArea = ({ tocItemHeight, detailData }: DimmedAreaProps) => {
 					<InfoIcon /> 이미 구독중이라면?
 				</span>
 				<GoogleLogin variant="link" text="로그인해서 아티클 아래 내용 마저 읽기" />
-				<HookingTitle> 4. {detailData.template_summary[3]["title"]}</HookingTitle>
-				<HookingTitle> 5. {detailData.template_summary[4]["title"]}</HookingTitle>
 			</Info>
 		</Container>
 	);
@@ -37,12 +33,12 @@ const DimmedArea = ({ tocItemHeight, detailData }: DimmedAreaProps) => {
 export default DimmedArea;
 
 const Container = styled.div<{ $height: number }>`
-	height: ${({ $height }) => $height + 60}px;
+	height: ${({ $height }) => $height}px;
 	position: absolute;
 	top: -4px;
 	padding-top: ${({ $height }) => ($height - 432) / 2}px;
 	padding-bottom: ${({ $height }) => ($height - 432) / 2}px;
-	/* background-color: rgba(255, 255, 255, 0.9); */
+	background-color: rgba(255, 255, 255, 0.9);
 
 	display: flex;
 	flex-direction: column;
@@ -95,15 +91,5 @@ const Info = styled.div`
 		line-height: 14.32px;
 		display: flex;
 		gap: 4px;
-	}
-`;
-
-const HookingTitle = styled.div`
-	font-size: 16px;
-	font-weight: 400;
-	line-height: 140%;
-	/* 네 번째 요소에만 margin-top: 12px 적용 */
-	&:nth-of-type(1) {
-		margin-top: 12px;
 	}
 `;
