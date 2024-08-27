@@ -72,7 +72,7 @@ const Container = styled.div<{ $isFixed: boolean; variant: "default" | "border" 
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 16px;
-	margin-top: ${(props) => (props.variant === "border" ? "32px" : props.$isFixed ? "130px" : "0px")};
+	margin-top: ${(props) => (props.variant === "border" ? "32px" : props.$isFixed ? "160px" : "0px")};
 
 	div {
 		display: flex;
