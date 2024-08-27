@@ -31,7 +31,7 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 
 		if (sortOptionsRef.current) {
 			const { top } = sortOptionsRef.current.getBoundingClientRect();
-			window.scrollTo({ top: window.scrollY + top - 94 - 52, behavior: "smooth" });
+			window.scrollTo({ top: window.scrollY + top - 94 - 112, behavior: "smooth" });
 		}
 	};
 
