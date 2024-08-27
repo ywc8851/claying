@@ -2,7 +2,6 @@ import styled from "styled-components";
 import PlayIcon from "@/assets/play.svg?react";
 import { formatTimeRange } from "@/utils/formatter";
 import DimmedArea from "./DimmedArea";
-import { DataProps } from "@/types/dataProps";
 import { forwardRef } from "react";
 import { formatSummary } from "@/utils/formatter";
 
