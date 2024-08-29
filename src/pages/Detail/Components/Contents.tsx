@@ -32,7 +32,7 @@ const Contents = ({ detailData, thumbnails, handleTocItemClick }: ContentsProps)
 			<ContentWrapper>
 				{detailData.template_summary
 					.slice(0, user.name === "" ? 4 : detailData.template_summary.length)
-					.map(({ title, start_time, detail_contents }, index) => (
+					.map(({ title, start_time, detail_contents, explanation_keyword, explanation_description }, index) => (
 						<TocItem
 							key={index}
 							ref={index === (user.name === "" ? 3 : detailData.template_summary.length - 1) ? tocItemsRef : null}
@@ -40,6 +40,8 @@ const Contents = ({ detailData, thumbnails, handleTocItemClick }: ContentsProps)
 							start={Math.floor(Number(start_time))}
 							summary={detail_contents}
 							thumbnails={thumbnails[index]}
+							explanation_keyword={explanation_keyword}
+							explanation_description={explanation_description}
 							dimmed={index >= 3 && user.name === ""}
 							tocItemHeight={tocItemHeight}
 							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}

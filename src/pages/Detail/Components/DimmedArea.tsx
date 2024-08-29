@@ -23,7 +23,7 @@ const DimmedArea = ({ tocItemHeight }: DimmedAreaProps) => {
 				<span>
 					<InfoIcon /> 이미 구독중이라면?
 				</span>
-				<GoogleLogin variant="link" text="로그인해서 피드 마저 읽기" />
+				<GoogleLogin variant="link" text="로그인해서 아티클 아래 내용 마저 읽기" />
 			</Info>
 		</Container>
 	);

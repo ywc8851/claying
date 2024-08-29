@@ -20,7 +20,7 @@ const index = () => {
 			try {
 				const response = await axios.get("https://claying.shop/briefing/top_videos/");
 				setApiData(response.data);
-				console.log(response.data[0]);
+				console.log(response.data.length);
 			} catch (error) {
 				console.error("Error fetching top videos:", error);
 			}

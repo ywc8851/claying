@@ -27,5 +27,7 @@ export interface DataProps {
 interface TemplateSummary {
 	title: string;
 	detail_contents: string;
+	explanation_keyword: string;
+	explanation_description: string;
 	start_time: string;
 }

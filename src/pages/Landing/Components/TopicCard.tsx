@@ -118,15 +118,15 @@ const Title = styled.span`
 `;
 
 const Summary = styled.div`
-	padding: 14px;
+	padding: 4px;
 	border-radius: 4px;
-	background: rgba(244, 245, 247, 1);
 
 	p {
 		height: 54px;
 		font-size: 16px;
 		font-weight: 400;
 		line-height: 168%;
+		color: rgb(119 121 123);
 
 		display: -webkit-box;
 		word-break: break-word;
@@ -141,8 +141,9 @@ const Summary = styled.div`
 
 const Thumbnail = styled.img`
 	object-fit: cover;
-	height: 154px;
 	border-radius: 4px;
+	width: 100%;
+	aspect-ratio: 306 / 172; /* 원하는 비율로 설정 */
 `;
 
 const UploadTime = styled.span`
