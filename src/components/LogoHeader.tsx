@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigate, useLocation } from "react-router-dom";
+import { isDesktop } from "react-device-detect";
 import { auth, signOut } from "@/firebase";
 import { userState } from "@/store/user";
 import { playerState } from "@/store/player";
@@ -66,7 +67,7 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 
 	return (
 		<>
-			<Container $isDetailPage={isDetailPage}>
+			<Container $isDetailPage={isDetailPage} $isDesktop={isDesktop}>
 				<PageInfo>
 					{isDetailPage && <BackIcon onClick={goHome} />}
 					{title === "" ? (
@@ -99,8 +100,9 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 };
 export default LogoHeader;
 
-const Container = styled.header<{ $isDetailPage: boolean }>`
+const Container = styled.header<{ $isDetailPage: boolean; $isDesktop: boolean }>`
 	width: 100%;
+	max-width: ${({ $isDesktop }) => ($isDesktop ? "420px" : "none")};
 	height: 52px;
 	padding: 0 20px !important;
 	position: fixed;

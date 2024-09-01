@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil";
 import { useParams } from "react-router-dom";
 import YouTube, { YouTubeProps } from "react-youtube";
 import { Helmet } from "react-helmet";
+import { isDesktop } from "react-device-detect";
 import LogoHeader from "@/components/LogoHeader";
 import Contents from "./Components/Contents";
 import { DataProps } from "@/types/dataProps";
@@ -138,7 +139,7 @@ const index = () => {
 						<Upload>{detailData.upload_date} 업로드</Upload>
 					</PageInfo>
 					{isPlayerVisible && (
-						<VideoContainer ref={videoContainerRef} $isFixed={isFixed}>
+						<VideoContainer ref={videoContainerRef} $isFixed={isFixed} $isDesktop={isDesktop}>
 							{isLoading && <Loader />}
 							<YouTube
 								videoId={id}
@@ -264,10 +265,9 @@ const TOC = styled.div`
 	}
 `;
 
-const VideoContainer = styled.div<{ $isFixed: boolean }>`
+const VideoContainer = styled.div<{ $isFixed: boolean; $isDesktop: boolean }>`
 	position: ${(props) => (props.$isFixed ? "fixed" : "static")};
 	top: ${(props) => (props.$isFixed ? "52px" : "auto")};
-	left: ${(props) => (props.$isFixed ? "0" : "auto")};
 	z-index: 1000;
 	display: flex;
 
@@ -276,6 +276,7 @@ const VideoContainer = styled.div<{ $isFixed: boolean }>`
 
 		iframe {
 			width: 100vw;
+			max-width: ${({ $isDesktop }) => ($isDesktop ? "420px" : "none")};
 		}
 	}
 `;

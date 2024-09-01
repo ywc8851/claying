@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { isDesktop } from "react-device-detect";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
 
 interface TopicNavProps {
@@ -17,7 +18,7 @@ const TopicNav = ({ $isFixed, selectedTopic, handleTopicClick }: TopicNavProps) 
 	];
 
 	return (
-		<Container $isFixed={$isFixed}>
+		<Container $isFixed={$isFixed} $isDesktop={isDesktop}>
 			{topicGroups.map((chunk, index) => (
 				<Column key={index}>
 					{chunk.map(({ topic, icon }) => (
@@ -34,8 +35,9 @@ const TopicNav = ({ $isFixed, selectedTopic, handleTopicClick }: TopicNavProps) 
 
 export default TopicNav;
 
-const Container = styled.div<{ $isFixed: boolean }>`
+const Container = styled.div<{ $isFixed: boolean; $isDesktop: boolean }>`
 	width: calc(100% + 20px);
+	max-width: ${({ $isDesktop }) => ($isDesktop ? "400px" : "none")};
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
@@ -46,7 +48,6 @@ const Container = styled.div<{ $isFixed: boolean }>`
 	padding-right: ${(props) => (props.$isFixed ? "50px" : "auto")};
 	position: ${(props) => (props.$isFixed ? "fixed" : "static")};
 	top: ${(props) => (props.$isFixed ? "52px" : "auto")};
-	left: ${(props) => (props.$isFixed ? "20px" : "auto")};
 	z-index: ${(props) => (props.$isFixed ? 10000 : 0)};
 
 	overflow-x: scroll;
