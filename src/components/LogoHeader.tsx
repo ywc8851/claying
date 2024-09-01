@@ -47,10 +47,6 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 		setPlayer(!player);
 	};
 
-	const goBack = () => {
-		navigate(-1);
-	};
-
 	const goHome = () => {
 		navigate("/");
 	};
@@ -72,7 +68,7 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 		<>
 			<Container $isDetailPage={isDetailPage}>
 				<PageInfo>
-					{isDetailPage && <BackIcon onClick={goBack} />}
+					{isDetailPage && <BackIcon onClick={goHome} />}
 					{title === "" ? (
 						<span onClick={goHome} className="logo">
 							로고
