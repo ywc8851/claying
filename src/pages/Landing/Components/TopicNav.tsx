@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { isDesktop } from "react-device-detect";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
@@ -9,6 +10,9 @@ interface TopicNavProps {
 }
 
 const TopicNav = ({ $isFixed, selectedTopic, handleTopicClick }: TopicNavProps) => {
+	const [hasScrolled, setHasScrolled] = useState(false);
+	const containerRef = useRef<HTMLDivElement>(null);
+
 	const navSize = Math.ceil(YOUTUBE_TOPICS.length / 3);
 
 	const topicGroups = [
@@ -17,8 +21,27 @@ const TopicNav = ({ $isFixed, selectedTopic, handleTopicClick }: TopicNavProps) 
 		YOUTUBE_TOPICS.slice(navSize * 2, YOUTUBE_TOPICS.length),
 	];
 
+	useEffect(() => {
+		const handleScroll = () => {
+			if (containerRef.current) {
+				setHasScrolled(containerRef.current.scrollLeft > 0);
+			}
+		};
+
+		const container = containerRef.current;
+		if (container) {
+			container.addEventListener("scroll", handleScroll);
+		}
+
+		return () => {
+			if (container) {
+				container.removeEventListener("scroll", handleScroll);
+			}
+		};
+	}, []);
+
 	return (
-		<Container $isFixed={$isFixed} $isDesktop={isDesktop}>
+		<Container ref={containerRef} $isDesktop={isDesktop} $isFixed={$isFixed} $hasScrolled={hasScrolled}>
 			{topicGroups.map((chunk, index) => (
 				<Column key={index}>
 					{chunk.map(({ topic, icon }) => (
@@ -35,8 +58,7 @@ const TopicNav = ({ $isFixed, selectedTopic, handleTopicClick }: TopicNavProps) 
 
 export default TopicNav;
 
-const Container = styled.div<{ $isFixed: boolean; $isDesktop: boolean }>`
-	width: calc(100% + 20px);
+const Container = styled.div<{ $isDesktop: boolean; $isFixed: boolean; $hasScrolled: boolean }>`
 	max-width: ${({ $isDesktop }) => ($isDesktop ? "400px" : "none")};
 	display: flex;
 	flex-direction: column;
@@ -45,7 +67,11 @@ const Container = styled.div<{ $isFixed: boolean; $isDesktop: boolean }>`
 	margin-bottom: 12px;
 	background-color: rgba(242, 242, 242, 1);
 
-	padding-right: ${(props) => (props.$isFixed ? "50px" : "auto")};
+	margin-left: ${({ $isFixed, $hasScrolled }) =>
+		$isFixed ? ($hasScrolled ? "0" : "20px") : $hasScrolled ? "0" : "20px"};
+	width: ${(props) => (props.$isFixed ? "calc(100% + 20px)" : "calc(100% + 20px)")};
+	transition: margin-left 0.3s ease;
+
 	position: ${(props) => (props.$isFixed ? "fixed" : "static")};
 	top: ${(props) => (props.$isFixed ? "52px" : "auto")};
 	z-index: ${(props) => (props.$isFixed ? 10000 : 0)};

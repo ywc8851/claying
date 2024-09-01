@@ -80,7 +80,9 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 				{TODAY_TITLE}
 			</TodayTitle>
 			<CountdownTimer scrollRef={scrollRef} />
-			<TopicNav $isFixed={isFixed} selectedTopic={selectedTopic} handleTopicClick={handleTopicClick}></TopicNav>
+			<TopicNavContainer>
+				<TopicNav $isFixed={isFixed} selectedTopic={selectedTopic} handleTopicClick={handleTopicClick}></TopicNav>
+			</TopicNavContainer>
 			<SortOptions
 				ref={sortOptionsRef}
 				isFixed={isFixed}
@@ -123,4 +125,9 @@ const TodayTitle = styled.span`
 	display: flex;
 	align-items: center;
 	gap: 12px;
+`;
+
+const TopicNavContainer = styled.div`
+	padding: 0;
+	margin-left: -20px;
 `;
