@@ -1,15 +1,16 @@
 import styled from "styled-components";
 
 const Footer = () => {
-	const openPolicy = () => {
-		const notionPageUrl = "https://www.naver.com";
-		window.open(notionPageUrl, "_blank");
+	const openUrl = (url: string) => {
+		window.open(url, "_blank");
 	};
 
 	return (
 		<Container>
-			<button onClick={openPolicy}>이용약관</button>
-			<button onClick={openPolicy}>개인정보처리방침</button>
+			<button onClick={() => openUrl("https://youticle.notion.site/f076128fc331471cb90886dd8b19e4f5")}>이용약관</button>
+			<button onClick={() => openUrl("https://youticle.notion.site/077923c2481e4894b130b7ae1f1bc58a")}>
+				개인정보처리방침
+			</button>
 		</Container>
 	);
 };
