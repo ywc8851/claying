@@ -18,7 +18,7 @@ const index = () => {
 	useEffect(() => {
 		const getData = async () => {
 			try {
-				const response = await axios.get("https://claying.shop/briefing/top_videos/");
+				const response = await axios.get("https://claying.shop/briefing/top_videos/csv");
 				setApiData(response.data);
 				console.log(response.data.length);
 			} catch (error) {
