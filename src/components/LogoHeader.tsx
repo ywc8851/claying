@@ -22,6 +22,7 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 	const player = useRecoilValue(playerState);
 	const setPlayer = useSetRecoilState(playerState);
 	const [toastVisible, setToastVisible] = useState(false);
+	const [logoutBtnVisible, setLogoutBtnVisible] = useState(false);
 	const navigate = useNavigate();
 	const location = useLocation();
 	const isDetailPage = location.pathname.includes("/detail");
@@ -65,6 +66,8 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 		}
 	};
 
+	const handleClickProfile = () => setLogoutBtnVisible(!logoutBtnVisible);
+
 	return (
 		<>
 			<Container $isDetailPage={isDetailPage} $isDesktop={isDesktop}>
@@ -89,8 +92,9 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 					</IconSection>
 				)}
 				{title === "" && user.picture !== "" && (
-					<ProfileImage onClick={logOut}>
+					<ProfileImage onClick={handleClickProfile}>
 						{user.picture !== "" && <img src={user.picture} alt="User profile" />}
+						{logoutBtnVisible && <LogoutBtn onClick={logOut}>로그아웃</LogoutBtn>}
 					</ProfileImage>
 				)}
 			</Container>
@@ -114,7 +118,6 @@ const Container = styled.header<{ $isDetailPage: boolean; $isDesktop: boolean }>
 	justify-content: ${(props) => (props.$isDetailPage ? "space-between" : "space-between")};
 	align-items: center;
 	z-index: 1000;
-	overflow: hidden;
 
 	.logo {
 		margin-left: 8px;
@@ -146,6 +149,7 @@ const Title = styled.span`
 `;
 
 const ProfileImage = styled.div`
+	position: relative;
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
@@ -162,4 +166,22 @@ const IconSection = styled.div`
 	display: flex;
 	gap: 12px !important;
 	align-items: center;
+`;
+
+const LogoutBtn = styled.button`
+	width: 62px;
+	height: 30px;
+	padding: 6px;
+	border-radius: 4px;
+	background: #ffffff;
+	box-shadow: 0px 4px 4px 0px #00000040;
+
+	font-family: var(--font-Pretendard);
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 16.71px;
+
+	position: absolute;
+	bottom: -35px;
+	right: 0px;
 `;
