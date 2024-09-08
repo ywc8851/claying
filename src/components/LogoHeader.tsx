@@ -72,7 +72,7 @@ const LogoHeader = ({ title = "" }: LogoHeaderProps) => {
 					{isDetailPage && <BackIcon onClick={goHome} />}
 					{title === "" ? (
 						<span onClick={goHome} className="logo">
-							로고
+							YouTicle
 						</span>
 					) : (
 						<Title>{title}</Title>
@@ -119,6 +119,11 @@ const Container = styled.header<{ $isDetailPage: boolean; $isDesktop: boolean }>
 	.logo {
 		margin-left: 8px;
 		color: ${(props) => (props.$isDetailPage ? "rgba(0, 0, 0, 1)" : "rgba(255, 255, 255, 1)")};
+		font-family: Inter;
+		font-size: 18px;
+		font-weight: 700;
+		line-height: 18px;
+		text-align: center;
 	}
 `;
 
