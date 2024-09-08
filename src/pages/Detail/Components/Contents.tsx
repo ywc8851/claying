@@ -42,6 +42,7 @@ const Contents = ({ detailData, thumbnails, handleTocItemClick }: ContentsProps)
 							thumbnails={thumbnails[index]}
 							explanation_keyword={explanation_keyword}
 							explanation_description={explanation_description}
+							partialDimmed={index === 2 && user.name === ""}
 							dimmed={index >= 3 && user.name === ""}
 							tocItemHeight={tocItemHeight}
 							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}

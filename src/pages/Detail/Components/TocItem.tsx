@@ -13,18 +13,30 @@ interface TocItemProps {
 	explanation_keyword: string;
 	explanation_description: string;
 	tocItemHeight: number;
-	dimmed?: boolean;
+	partialDimmed: boolean;
+	dimmed: boolean;
 	onClick: () => void;
 }
 
 const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
 	(
-		{ title, start, summary, thumbnails, explanation_keyword, explanation_description, dimmed, tocItemHeight, onClick },
+		{
+			title,
+			start,
+			summary,
+			thumbnails,
+			explanation_keyword,
+			explanation_description,
+			partialDimmed,
+			dimmed,
+			tocItemHeight,
+			onClick,
+		},
 		ref
 	) => {
 		return (
 			<Container ref={ref}>
-				<ContentWrapper $dimmed={dimmed}>
+				<ContentWrapper $dimmed={dimmed} $partialDimmed={partialDimmed}>
 					<Title>{title}</Title>
 					<Thumbnail onClick={onClick}>
 						<img src={thumbnails} alt={title} />
@@ -57,8 +69,9 @@ const Container = styled.div`
 	margin-top: 60px;
 `;
 
-const ContentWrapper = styled.div<{ $dimmed?: boolean }>`
+const ContentWrapper = styled.div<{ $dimmed: boolean; $partialDimmed: boolean }>`
 	opacity: ${(props) => (props.$dimmed ? 0.2 : 1)};
+	${({ $partialDimmed }) => ($partialDimmed ? `mask-image: linear-gradient(to top, transparent 20%, black 100%);` : "")}
 `;
 
 const Title = styled.span`
