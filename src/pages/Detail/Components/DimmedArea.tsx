@@ -35,8 +35,8 @@ const Container = styled.div<{ $height: number }>`
 	height: ${({ $height }) => $height}px;
 	position: absolute;
 	top: -4px;
-	padding-top: ${({ $height }) => ($height - 432) / 2}px;
-	padding-bottom: ${({ $height }) => ($height - 432) / 2}px;
+	/* padding-top: ${({ $height }) => ($height - 432) / 2}px; */
+	padding-bottom: ${({ $height }) => $height - 432}px;
 	background-color: rgba(255, 255, 255, 0.9);
 
 	display: flex;
