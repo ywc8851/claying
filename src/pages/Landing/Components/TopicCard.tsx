@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { detailDataState } from "@/store/detailData";
 import { DataProps } from "@/types/dataProps";
-import { parseSubscribersCount } from "@/utils/formatter";
+import { formatDate, parseSubscribersCount } from "@/utils/formatter";
 
 interface TopicCardProps extends DataProps {
 	icon: React.ReactNode;
@@ -12,23 +12,11 @@ interface TopicCardProps extends DataProps {
 const TopicCard = (props: TopicCardProps) => {
 	const navigate = useNavigate();
 	const setTopicState = useSetRecoilState(detailDataState);
-	const {
-		section,
-		headline_title,
-		headline_subtitle,
-		short_summary,
-		thumbnail,
-		upload_date,
-		channel_thumbnail,
-		channel_name,
-		channel_subscribers,
-		icon,
-		id,
-	} = props;
+	const { section, summary_data, thumbnail, upload_date, channel_details, icon, video_id } = props;
 
 	const handleNavigate = () => {
 		setTopicState(props);
-		navigate(`/detail/${id}`);
+		navigate(`/detail/${video_id}`);
 	};
 
 	return (
@@ -45,19 +33,19 @@ const TopicCard = (props: TopicCardProps) => {
 					)}
 				</IconWrapper>
 				<Title>
-					{headline_title}, <br /> {headline_subtitle}
+					{summary_data.headline_title}, <br /> {summary_data.headline_sub_title}
 				</Title>
 			</CardHeader>
 			<Summary>
-				<p>{short_summary}</p>
+				<p>{summary_data.short_summary}</p>
 			</Summary>
 			<Thumbnail src={thumbnail} />
-			<UploadTime>{upload_date.slice(0, -3)} 영상 업로드</UploadTime>
+			<UploadTime>{formatDate(upload_date)} 영상 업로드</UploadTime>
 			<ChannelInfo>
-				<ProfileImage src={channel_thumbnail}></ProfileImage>
+				<ProfileImage src={channel_details.channel_thumbnail}></ProfileImage>
 				<ProfileInfo>
-					<Name>{channel_name}</Name>
-					<Subscriber>{parseSubscribersCount(channel_subscribers)}</Subscriber>
+					<Name>{channel_details.channel_name}</Name>
+					<Subscriber>{parseSubscribersCount(channel_details.channel_subscribers)}</Subscriber>
 				</ProfileInfo>
 			</ChannelInfo>
 		</Container>

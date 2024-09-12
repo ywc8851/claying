@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useMemo, useState } from "react";
-import { DataProps } from "@/types/dataProps";
+import { DataProps, DetailDataProps } from "@/types/dataProps";
 import { useRecoilValue } from "recoil";
 import { dataState } from "@/store/data";
 import { YOUTUBE_TOPICS } from "@/constants/topic";
@@ -9,7 +9,7 @@ import CountdownTimer from "@/components/CountdownTimer";
 import SortOptions from "@/components/SortOptions";
 
 interface RecommendProps {
-	detailData: DataProps;
+	detailData: DetailDataProps;
 }
 
 const Recommend = ({ detailData }: RecommendProps) => {
@@ -29,10 +29,12 @@ const Recommend = ({ detailData }: RecommendProps) => {
 	};
 
 	const filteredAndSortedData = useMemo(() => {
-		const filteredData = apiData.filter((item) => item.section === detailData.section && item.id !== detailData.id);
+		const filteredData = apiData.filter(
+			(item) => item.section === detailData.section && item.video_id !== detailData.video_id
+		);
 		const sortedData = filteredData.sort((a, b) => {
 			if (sortCriteria === "engagement") {
-				return b.engagement_score - a.engagement_score;
+				return b.score - a.score;
 			} else {
 				return b.views - a.views;
 			}

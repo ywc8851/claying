@@ -48,7 +48,7 @@ const YoutubeToday = ({ data }: YoutubeTodayProps) => {
 		const filteredData = data.filter((item) => selectedTopic === "전체" || item.section === selectedTopic);
 		const sortedData = filteredData.sort((a, b) => {
 			if (sortCriteria === "engagement") {
-				return b.engagement_score - a.engagement_score;
+				return b.score - a.score;
 			} else {
 				return b.views - a.views;
 			}

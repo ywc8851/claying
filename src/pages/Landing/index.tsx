@@ -18,9 +18,8 @@ const index = () => {
 	useEffect(() => {
 		const getData = async () => {
 			try {
-				const response = await axios.get("https://claying.shop/briefing/top_videos/csv");
+				const response = await axios.get("https://claying.shop/briefing/top_videos");
 				setApiData(response.data);
-				console.log(response.data.length);
 			} catch (error) {
 				console.error("Error fetching top videos:", error);
 			}

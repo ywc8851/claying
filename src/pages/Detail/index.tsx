@@ -7,15 +7,15 @@ import { Helmet } from "react-helmet";
 import { isDesktop } from "react-device-detect";
 import LogoHeader from "@/components/LogoHeader";
 import Contents from "./Components/Contents";
-import { DataProps } from "@/types/dataProps";
-import { formatSummary } from "@/utils/formatter";
+import { DetailDataProps } from "@/types/dataProps";
+import { formatDate, formatSummary } from "@/utils/formatter";
 import { base64ToBlobUrl } from "@/utils/base64";
 import { playerState } from "@/store/player";
 import NotFoundPage from "./NotFound";
 
 const index = () => {
 	const { id } = useParams();
-	const [detailData, setDetailData] = useState<DataProps | null>(null);
+	const [detailData, setDetailData] = useState<DetailDataProps | null>(null);
 	const [thumbnails, setThumbnails] = useState<string[]>([]);
 	const [videoPlayer, setVideoPlayer] = useState<any>(null);
 	const [isFixed, setIsFixed] = useState(false);
@@ -101,6 +101,7 @@ const index = () => {
 					throw new Error(`HTTP error! status: ${response.status}`);
 				}
 				const data = await response.json();
+				console.log(data[0]);
 				setDetailData(data[0]);
 			} catch (error) {
 				setIs404(true);
@@ -122,21 +123,25 @@ const index = () => {
 				<Helmet>
 					<title>{detailData.title}</title>
 					<meta property="og:title" content={detailData.title} />
-					<meta property="og:description" content={detailData.short_summary} />
+					<meta property="og:description" content={detailData.summary_data.short_summary} />
 					<meta property="og:image" content={detailData.thumbnail} />
 				</Helmet>
 			)}
 			{detailData && (
 				<>
-					<LogoHeader title={isFixed ? `${detailData.headline_title}, ${detailData.headline_subtitle}` : ""} />
+					<LogoHeader
+						title={
+							isFixed ? `${detailData.summary_data.headline_title}, ${detailData.summary_data.headline_sub_title}` : ""
+						}
+					/>
 					<PageInfo ref={scrollRef}>
 						<Category>{detailData.section}</Category>
 						<Title>
-							{detailData.headline_title},
+							{detailData.summary_data.headline_title},
 							<br />
-							{detailData.headline_subtitle}
+							{detailData.summary_data.headline_sub_title}
 						</Title>
-						<Upload>{detailData.upload_date} 업로드</Upload>
+						<Upload>{formatDate(detailData.upload_date)} 업로드</Upload>
 					</PageInfo>
 					{isPlayerVisible && (
 						<VideoContainer ref={videoContainerRef} $isFixed={isFixed} $isDesktop={isDesktop}>
@@ -154,13 +159,13 @@ const index = () => {
 					<Preview $isFixed={isFixed}>
 						<div>
 							<span>🔎 미리보기</span>
-							{formatSummary(detailData.short_summary)}
+							{formatSummary(detailData.summary_data.short_summary)}
 						</div>
 					</Preview>
 					<TOC>
 						<div>목차</div>
 						<div>
-							{detailData.template_summary.map(({ title }, index) => {
+							{detailData.summary_data.section.map(({ title }, index) => {
 								return <span key={index}>{title} </span>;
 							})}
 						</div>
