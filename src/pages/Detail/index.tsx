@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useParams } from "react-router-dom";
 import YouTube, { YouTubeProps } from "react-youtube";
 import { Helmet } from "react-helmet";
@@ -22,6 +22,7 @@ const index = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [is404, setIs404] = useState(false);
 	const isPlayerVisible = useRecoilValue(playerState);
+	const setIsPlayerVisible = useSetRecoilState(playerState);
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const videoContainerRef = useRef<HTMLDivElement>(null);
 
@@ -38,9 +39,12 @@ const index = () => {
 	};
 
 	const handleTocItemClick = (start: number) => {
-		if (!isPlayerVisible) return;
+		if (!isPlayerVisible) setIsPlayerVisible(true);
 
-		if (videoPlayer) videoPlayer.seekTo(start, true);
+		if (videoPlayer) {
+			videoPlayer.seekTo(start, true);
+			videoPlayer.playVideo();
+		}
 	};
 
 	const opts: YouTubeProps["opts"] = {
@@ -101,7 +105,6 @@ const index = () => {
 					throw new Error(`HTTP error! status: ${response.status}`);
 				}
 				const data = await response.json();
-				console.log(data[0]);
 				setDetailData(data[0]);
 			} catch (error) {
 				setIs404(true);
@@ -143,19 +146,16 @@ const index = () => {
 						</Title>
 						<Upload>{formatDate(detailData.upload_date)} 업로드</Upload>
 					</PageInfo>
-					{isPlayerVisible && (
-						<VideoContainer ref={videoContainerRef} $isFixed={isFixed} $isDesktop={isDesktop}>
-							{isLoading && <Loader />}
-							<YouTube
-								videoId={id}
-								opts={opts}
-								onReady={onPlayerReady}
-								onStateChange={onPlayerStateChange}
-								style={{ display: isLoading ? "none" : "block" }}
-							/>
-						</VideoContainer>
-					)}
-
+					<VideoContainer ref={videoContainerRef} $isFixed={isFixed} $isDesktop={isDesktop}>
+						{isLoading && <Loader />}
+						<YouTube
+							videoId={id}
+							opts={opts}
+							onReady={onPlayerReady}
+							onStateChange={onPlayerStateChange}
+							style={{ display: isLoading ? "none" : isPlayerVisible ? "block" : "none" }}
+						/>
+					</VideoContainer>
 					<Preview $isFixed={isFixed}>
 						<div>
 							<span>🔎 미리보기</span>
