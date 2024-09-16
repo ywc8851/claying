@@ -49,6 +49,7 @@ const StyledComponent = styled.div<StyledComponentProps>`
 			? css`
 					width: calc(100% - 40px);
 					height: 60px;
+					padding: 20px 0;
 					border-radius: 4px;
 					background-color: #007bff;
 					font-size: 16px;
