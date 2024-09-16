@@ -10,6 +10,9 @@ import { dataState } from "@/store/data";
 import { userState } from "@/store/user";
 import GoogleLogin from "@/components/GoogleLogin";
 
+const STOCK_API_URL = "https://claying.shop/briefing/top_videos/stock";
+const EXCEPT_STOCK_API_URL = "https://claying.shop/briefing/top_videos";
+
 const index = () => {
 	const setApiData = useSetRecoilState(dataState);
 	const apiData = useRecoilValue(dataState);
@@ -18,10 +21,11 @@ const index = () => {
 	useEffect(() => {
 		const getData = async () => {
 			try {
-				const response = await axios.get("https://claying.shop/briefing/top_videos");
-				setApiData(response.data);
+				const [response1, response2] = await Promise.all([axios.get(EXCEPT_STOCK_API_URL), axios.get(STOCK_API_URL)]);
+				const combinedData = [...response1.data, ...response2.data];
+				setApiData(combinedData);
 			} catch (error) {
-				console.error("Error fetching top videos:", error);
+				console.error("API 에러가 발생하였습니다 :", error);
 			}
 		};
 
