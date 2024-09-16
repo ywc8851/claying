@@ -67,7 +67,7 @@ interface SummaryData {
 	headline_title: string;
 	headline_sub_title: string;
 	short_summary: string;
-	section: Section[];
+	section: SectionProps[];
 	views: number;
 	likes: number;
 	comments: number;
@@ -75,7 +75,7 @@ interface SummaryData {
 	score: number;
 }
 
-interface Section {
+export interface SectionProps {
 	title: string;
 	detail_contents: string;
 	start_time: string;
