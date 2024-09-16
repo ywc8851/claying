@@ -4,6 +4,7 @@ import { formatTimeRange } from "@/utils/formatter";
 import DimmedArea from "./DimmedArea";
 import { forwardRef } from "react";
 import { formatSummary } from "@/utils/formatter";
+import { SectionProps } from "@/types/dataProps";
 
 interface TocItemProps {
 	title: string;
@@ -12,9 +13,10 @@ interface TocItemProps {
 	thumbnails: string;
 	explanation_keyword: string;
 	explanation_description: string;
-	tocItemHeight: number;
 	partialDimmed: boolean;
 	dimmed: boolean;
+	toc: SectionProps[];
+	tocItemHeight: number;
 	onClick: () => void;
 }
 
@@ -29,6 +31,7 @@ const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
 			explanation_description,
 			partialDimmed,
 			dimmed,
+			toc,
 			tocItemHeight,
 			onClick,
 		},
@@ -54,7 +57,7 @@ const TocItem = forwardRef<HTMLDivElement, TocItemProps>(
 						<TipAreaDescription>{explanation_description}</TipAreaDescription>
 					</Summary>
 				</ContentWrapper>
-				{dimmed && <DimmedArea tocItemHeight={tocItemHeight} />}
+				{dimmed && <DimmedArea tocItemHeight={tocItemHeight} toc={toc} />}
 			</Container>
 		);
 	}

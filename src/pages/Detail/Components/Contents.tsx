@@ -45,6 +45,7 @@ const Contents = ({ detailData, thumbnails, handleTocItemClick }: ContentsProps)
 							partialDimmed={index === 2 && user.name === ""}
 							dimmed={index >= 3 && user.name === ""}
 							tocItemHeight={tocItemHeight}
+							toc={detailData.summary_data.section}
 							onClick={() => handleTocItemClick(Math.floor(Number(start_time)))}
 						/>
 					))}
